@@ -33,6 +33,24 @@
 					?>
 				</tbody>
 			</table>
+			<script type="text/javascript">
+					function confirmar3(pk_almacen,almacen){
+						Swal.fire({
+						  title: 'Estás seguro?',
+						  html: "Se eliminará el almacen: <b>"+almacen+"</b>",
+						  icon: 'warning',
+						  showCancelButton: true,
+						  cancelButtonText: "Cancelar",
+						  confirmButtonColor: '#3085d6',
+						  cancelButtonColor: '#d33',
+						  confirmButtonText: 'Si, eliminar!'
+						}).then((result) => {
+						  if (result.value) {
+						    window.location="index.php?action=eliminar_almacen&pk_almacen="+pk_almacen;
+						  }
+						})
+					};
+	</script>
 				
 		
 

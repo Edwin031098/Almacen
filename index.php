@@ -13,12 +13,15 @@
 
 <link href="vista/css/nav.css" rel="stylesheet" type="text/css">
 <link href="vista/css/login.css" rel="stylesheet" type="text/css">
+<link href="vista/css/card.css" rel="stylesheet" type="text/css">
+
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="https://kit.fontawesome.com/ee48c18677.js" crossorigin="anonymous"></script>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
 
 </head>
 <body style="background-color:#ff00a6;" id="body-pd"> 
@@ -30,7 +33,12 @@
 
 
     ?>
+
     <script src="./vista/js/nav.js"></script>
+    
+   
 
 </body>
+<div>
+ 
 </html>

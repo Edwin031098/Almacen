@@ -20,9 +20,11 @@
 				<tr>
 					<th>#</th>
 					<th>Marca</th>
+
 					
 					<th>Editar</th>
 					<th>Borrar</th>
+					
 				</tr>
 				</thead>
 				<tbody>

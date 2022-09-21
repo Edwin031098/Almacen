@@ -58,6 +58,14 @@ class Paginas
 			$module = "vista/modulos/proovedores/mostrar_proveedor.php";
 
 		}
+		else if($enlaces == "eliminar_proveedor"){
+			$module = "vista/modulos/proovedores/eliminar_proveedor.php";
+
+		}
+		else if($enlaces == "editar_proveedor"){
+			$module = "vista/modulos/proovedores/editar_proveedor.php";
+
+		}
 		else if($enlaces == "agregar_trabajador"){
 			$module = "vista/modulos/trabajadores/agregar_trabajador.php";
 
@@ -72,6 +80,18 @@ class Paginas
 		}
 		else if($enlaces == "mostrar_almacen"){
 			$module = "vista/modulos/almacenes/mostrar_almacen.php";
+
+		}
+		else if($enlaces == "eliminar_almacen"){
+			$module = "vista/modulos/almacenes/eliminar_almacen.php";
+
+		}
+		else if($enlaces == "editar_almacen"){
+			$module = "vista/modulos/almacenes/editar_almacen.php";
+
+		}
+		else if($enlaces == "mostrar_inventario"){
+			$module = "vista/modulos/inventarios/mostrar_inventario.php";
 
 		}
 		else 

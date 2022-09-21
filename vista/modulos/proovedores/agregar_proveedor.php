@@ -5,7 +5,7 @@
     </div>
     <div clase="col-md-12">
    <div class="pull-right">
-    <a class="btn btn-primary shadow-none" data-toggle="tooltip" data-placement="top" title="Mostar Personas" href="index.php?action=mostrar_marca"> 
+    <a class="btn btn-primary shadow-none" data-toggle="tooltip" data-placement="top" title="Mostar Personas" href="index.php?action=mostrar_proveedor"> 
        <i class='fas fa-arrow-alt-circle-left'></i>
      </a>
    </div>
@@ -22,7 +22,7 @@
               $persona = Controller::consultaPersona();
               foreach ($persona as $datos1 =>$valor1)
               {
-                echo '<option value="'.$valor1["pk_persona"].'">'.$valor1["nombre"].' '.$valor1["apellidop"].' '.$valor1["apellidom"].'</option>';
+                echo '<option value="'.$valor1["pk_persona"].'">'.$valor1["nombrep"].' '.$valor1["apellidop"].' '.$valor1["apellidom"].'</option>';
               }
             ?>
           </select>
@@ -47,7 +47,7 @@
 
    
     
-  </div>
+  
   <button type="submit" class="btn btn-primary btn-lg ">Guardar</button>
   </form>
 

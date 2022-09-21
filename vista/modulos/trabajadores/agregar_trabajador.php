@@ -24,7 +24,7 @@
               $persona = Controller::consultaPersona();
               foreach ($persona as $datos1 =>$valor1)
               {
-                echo '<option value="'.$valor1["pk_persona"].'">'.$valor1["nombre"].' '.$valor1["apellidop"].' '.$valor1["apellidom"].'</option>';
+                echo '<option value="'.$valor1["pk_persona"].'">'.$valor1["nombrep"].' '.$valor1["apellidop"].' '.$valor1["apellidom"].'</option>';
               }
             ?>
           </select>

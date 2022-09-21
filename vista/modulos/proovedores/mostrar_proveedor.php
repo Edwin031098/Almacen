@@ -23,7 +23,7 @@
 					<th>Marca</th>
 
 					
-					<th>Editar</th>
+					
 					<th>Borrar</th>
 				</tr>
 				</thead>
@@ -34,7 +34,24 @@
 					?>
 				</tbody>
 			</table>
-				
+				<script type="text/javascript">
+					function confirmar5(pk_proveedor){
+						Swal.fire({
+						  title: 'Estás seguro?',
+						  html: "Se eliminará el proveedor: <b>"+pk_proveedor+"</b>",
+						  icon: 'warning',
+						  showCancelButton: true,
+						  cancelButtonText: "Cancelar",
+						  confirmButtonColor: '#3085d6',
+						  cancelButtonColor: '#d33',
+						  confirmButtonText: 'Si, eliminar!'
+						}).then((result) => {
+						  if (result.value) {
+						    window.location="index.php?action=eliminar_proveedor&pk_proveedor="+pk_proveedor;
+						  }
+						})
+					};
+	</script>
 		
 
 		</div>
