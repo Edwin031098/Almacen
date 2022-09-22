@@ -32,6 +32,10 @@ class Paginas
 			$module = "vista/modulos/productos/agregar_producto.php";
 
 		}
+		else if($enlaces == "eliminar_producto"){
+			$module = "vista/modulos/productos/eliminar_producto.php";
+
+		}
 		else if($enlaces == "agregar_marca"){
 			$module = "vista/modulos/marcas/agregar_marca.php";
 
@@ -74,6 +78,15 @@ class Paginas
 			$module = "vista/modulos/trabajadores/mostrar_trabajador.php";
 
 		}
+		else if($enlaces == "eliminar_trabajador"){
+			$module = "vista/modulos/trabajadores/eliminar_trabajador.php";
+
+		}
+		else if($enlaces == "editar_trabajador"){
+			$module = "vista/modulos/trabajadores/editar_trabajador.php";
+
+		}
+		
 		else if($enlaces == "agregar_almacen"){
 			$module = "vista/modulos/almacenes/agregar_almacen.php";
 
@@ -90,8 +103,8 @@ class Paginas
 			$module = "vista/modulos/almacenes/editar_almacen.php";
 
 		}
-		else if($enlaces == "mostrar_inventario"){
-			$module = "vista/modulos/inventarios/mostrar_inventario.php";
+		else if($enlaces == "mostrar_alpro"){
+			$module = "vista/modulos/almacen_producto/mostrar_alpro.php";
 
 		}
 		else 

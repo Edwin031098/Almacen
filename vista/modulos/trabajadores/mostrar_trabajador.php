@@ -35,7 +35,24 @@
 				</tbody>
 			</table>
 				
-		
+		<script type="text/javascript">
+          function confirmar1(pk_empleado){
+            Swal.fire({
+              title: 'Estás seguro?',
+              html: "Se eliminará el empleado: <b>"+pk_empleado+"</b>",
+              icon: 'warning',
+              showCancelButton: true,
+              cancelButtonText: "Cancelar",
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Si, eliminar!'
+            }).then((result) => {
+              if (result.value) {
+                window.location="index.php?action=eliminar_trabajador&pk_empleado="+pk_empleado;
+              }
+            })
+          };
+        </script>
 
 		</div>
 

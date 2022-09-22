@@ -19,6 +19,7 @@
 			<table class="table table-hover">
 				<thead>
 				<tr>
+					<th>#</th>
 					<th>Nombre</th>
 					<th>Apellido Paterno</th>
 					<th>Apellido Materno</th>

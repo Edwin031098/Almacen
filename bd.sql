@@ -25,7 +25,9 @@ FOREIGN KEY (fk_marca) REFERENCES marca(pk_marca)
 CREATE TABLE empleado(
 	pk_empleado INT PRIMARY KEY NOT NULL AUTO_INCREMENT COMMENT 'Llave primaria de la tabla empleados',
 	fk_persona INT NOT NULL COMMENT 'nombre del empleado',
-	FOREIGN KEY (fk_persona) REFERENCES persona(pk_persona)
+	fk_cargo INT NOT NULL COMMENT 'nombre del empleado',
+	FOREIGN KEY (fk_persona) REFERENCES persona(pk_persona),
+	FOREIGN KEY (fk_cargo) REFERENCES cargo(pk_cargo)
 );
 CREATE TABLE almacen(
 pk_almacen INT PRIMARY KEY NOT NULL AUTO_INCREMENT COMMENT 'Llave primaria de la tabla empleados',
@@ -49,4 +51,8 @@ CREATE TABLE inventario(
 	FOREIGN KEY (fk_producto) REFERENCES producto(pk_producto),
 	FOREIGN KEY (fk_proveedor)REFERENCES proveedor(pk_proveedor)
 
+);
+CREATE TABLE cargo(
+pk_cargo INT PRIMARY KEY NOT NULL AUTO_INCREMENT COMMENT 'Llave primaria de la tabla cargo',
+cargo VARCHAR(50) NOT NULL COMMENT 'cargo del empleado'
 );

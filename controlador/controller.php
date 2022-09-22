@@ -27,6 +27,7 @@ class Controller
 		{
 			?>
 				<tr>
+					<td><?php echo $datos['pk_persona']; ?></td>
 					<td><?php echo $datos['nombrep']; ?></td>
 					<td><?php echo $datos['apellidop']; ?></td>
 					<td><?php echo $datos['apellidom']; ?></td>
@@ -115,29 +116,7 @@ class Controller
 	}
 	
 	
-	static public function vistaProductoController()
-	{
-		$respuesta = Datos::vistaProductoModel("producto");
-		foreach($respuesta as $row => $datos)
-		{
-			?>
-				<tr>
-					<td><?php echo '<img src="'.$datos['fotop'].'" width="150px;">'; ?></td>
-					<td><?php echo $datos['codigo']; ?></td>
-					<td><?php echo $datos['producto']; ?></td>
-					<td><?php echo $datos['pieza']; ?></td>
-					
-					<td><?php echo $datos['fk_marca']; ?></td>
-					
-				
-					<td><button id="btn-editar" class="btn btn-warning" >Editar</button></td>
-					<td> <button class="btn btn-danger" >🗑️</button></td>
-
-				</tr>
-				
-			<?php
-		}
-	}
+	
 		//consultas de EMPLEADOS
 	static public function registroProductoController()
 	{
@@ -201,6 +180,82 @@ class Controller
 			}
 		}
 	}
+	// Método que recibe los valores de eliminar_marca.php
+		static public function eliminarProductoController($pk_producto){
+
+			if(isset($pk_producto)){
+
+				if(!empty($pk_producto)){
+
+					$respuesta = Datos::eliminarProductoModelo($pk_producto, "producto");
+
+					if($respuesta == "ok"){
+
+						echo '<script>
+							(async () => {
+					
+							const a = await Swal.fire({
+								icon: "success",
+								title: "El producto fue eliminada con éxito 😄👍",
+								html: "El producto <b>'.$pk_producto.'</b>, fue eliminada",
+								footer: "Presiona OK para continuar."
+							});
+							
+							if(a){
+								window.location="index.php?action=mostrar_producto";
+							}
+
+							})()
+
+							</script>';
+
+					}
+					else if($respuesta == "noexiste"){
+
+						echo '<script>
+						Swal.fire({
+								icon: "info",
+								timer: 5000,
+								timerProgressBar: true,
+								title: "El producto: '.$pk_producto.', no existe",
+								text: "Ingrese un producto existente",
+								footer: "Este mensaje cerrará automáticamente en 5s."
+							});
+						</script>
+						';
+
+					}
+					else{
+
+						echo '<script>
+						Swal.fire({
+								icon: "error",
+								timer: 5000,
+								timerProgressBar: true,
+								title: "Ups!😢<br> Ocurrió un error al eliminar el producto:",
+								html: "<b>'.$pk_producto.'</b>"
+							});
+						</script>
+						';
+
+					}
+
+				}else{
+
+					echo '<script>
+							Swal.fire({
+								icon: "warning",
+								timer: 5000,
+								timerProgressBar: true,
+								title: "Porfavor ingrese un producto"
+							});
+						</script>
+						';
+					
+				}
+
+			}
+		}
 	static public function registroMarcaController(){
 
 if (isset($_POST['marca']))
@@ -499,6 +554,12 @@ if (isset($_POST['marca']))
      	$respuesta1 = Datos::listadoDeMarca($tabla1);
      	return $respuesta1;
      }
+     public static function consultaCargo()
+     {
+     	$tabla1 = "cargo";
+     	$respuesta1 = Datos::listadoDeCargo($tabla1);
+     	return $respuesta1;
+     }
 		
 		static public function vistaProveedorController()
 	{
@@ -517,7 +578,7 @@ if (isset($_POST['marca']))
 						<td><?php echo $datos['nombre']; ?></td>
 
 					
-				    <td><button id="btn-editar" class="btn btn-warning" onclick="window.location='index.php?action=editar_proveedor&fk_persona=<?php echo $datos['fk_persona']; ?>&persona=<?php echo $datos['nombrep']; ?>&marca=<?php echo $datos['nombre']; ?>&paterno=<?php echo $datos['apellidop']; ?>&materno=<?php echo $datos['apellidom']; ?>&pk_proveedor=<?php echo $datos['pk_proveedor']; ?>&fk_marca=<?php echo $datos['fk_marca']; ?>'">Editar</button></td>
+				    <td><button id="btn-editar" class="btn btn-warning" onclick="window.location='index.php?action=editar_proveedor&pk_persona=<?php echo $datos['pk_persona']; ?>&persona=<?php echo $datos['nombrep']; ?>&marca=<?php echo $datos['nombre']; ?>&paterno=<?php echo $datos['apellidop']; ?>&materno=<?php echo $datos['apellidom']; ?>&pk_proveedor=<?php echo $datos['pk_proveedor']; ?>&pk_marca=<?php echo $datos['pk_marca']; ?>'">Editar</button></td>
 					
 					<td> <button class="btn btn-danger" onclick="confirmar5('<?php echo $datos['pk_proveedor']; ?>')">🗑️</button></td>
 				</tr>
@@ -544,13 +605,13 @@ if (isset($_POST['marca']))
 							notificacion.play();
 							const a = await Swal.fire({
 								icon: "success",
-								title: "El proveedor fue modificado con éxito 😄👍",
-								html: "El proveedor <b>'.$pk_persona.' '.$pk_marca.'</b>, fue modificado correctamente</b>",
+								title: "El Almacen fue modificado con éxito 😄👍",
+								html: "El Almacen <b>'.$pk_almacen.' '.$almacen.'</b>, fue modificado correctamente</b>",
 								footer: "Presiona OK para continuar."
 							});
 							
 							if(a){
-								window.location="index.php?opcion=ver_proveedores";
+								window.location="index.php?action=mostrar_almacen";
 							}
 
 							})()
@@ -596,7 +657,7 @@ if (isset($_POST['marca']))
 								timer: 5000,
 								timerProgressBar: true,
 								title: "Ups!😢<br> Ocurrió un error al modificar al proveedor:",
-								html: "<b>'.$nombreProveedor.'</b>"
+								html: "<b>'.$almacen.'</b>"
 							});
 						</script>
 						';
@@ -620,13 +681,13 @@ if (isset($_POST['marca']))
 			}
 		}
 	// Método que recibe los valores de editar_proveedor.php
-		static public function editarProveedorController($fk_persona, $fk_marca, $pk_proveedor, $nombre){
+		static public function editarProveedorController($pk_persona, $pk_marca, $pk_proveedor){
 
-			if(isset($_POST['nvoPersona'])){
+			if(isset($_POST['nvoPersona']) || isset($_POST['nvoMarca'])){
 
-				if(!empty($_POST['nvoPersona'])){
+				if(!empty($_POST['nvoPersona']) || !empty($_POST['nvoMarca'])){
 
-					$datos = array('valor_idProveedor'=>$pk_proveedor, 'valor_nombreProveedor'=>$fk_persona, 'valor_marcaProveedor'=>$fk_marca, 'valor_nvoNombre'=>$_POST['nvoPersona'], 'valor_nvoMarca'=>$_POST['nvoMarca']);
+					$datos = array('valor_idProveedor'=>$pk_proveedor, 'valor_nombreProveedor'=>$pk_persona, 'valor_marcaProveedor'=>$pk_marca, 'valor_nvoNombre'=>$_POST['nvoPersona'], 'valor_nvoMarca'=>$_POST['nvoMarca']);
 					
 
 					$respuesta = Datos::editarProveedorModelo($datos, "proveedor");
@@ -832,19 +893,24 @@ if (isset($_POST['marca']))
 			}
 	static public function vistaTrabajadorController()
 	{
-		$respuesta = Datos::vistaTrabajadorModel("empleado");
+		$tablac="cargo";
+		$tablap="persona";
+		$respuesta = Datos::vistaTrabajadorModel("empleado",$tablac,$tablap);
 		foreach($respuesta as $row => $datos)
 		{
 			?>
 				<tr>
 					<td><?php echo $datos['pk_empleado']; ?></td>
-					<td><?php echo $datos['fk_persona']; ?></td>
+					<td><?php echo $datos['nombrep']; ?>
+					<?php echo $datos['apellidop']; ?>
+					<?php echo $datos['apellidom']; ?></td>
 						<td><?php echo $datos['cargo']; ?></td>
 
 					
 				
 					
-					<td><button id="btn-editar" class="btn btn-warning" >Editar</button></td><td> <a class="btn btn-danger" href="index.php?action=eliminar_marca=<?php echo $dato['pk_marca']; ?>'">🗑️</a></td>
+					<td><button id="btn-editar" class="btn btn-warning" onclick="window.location='index.php?action=editar_trabajador&pk_empleado=<?php echo $datos['pk_empleado']; ?>&persona=<?php echo $datos['nombrep']; ?>&paterno=<?php echo $datos['apellidop']; ?>&materno=<?php echo $datos['apellidom']; ?>&pk_cargo=<?php echo $datos['pk_cargo']; ?>&cargo=<?php echo $datos['cargo']; ?>&pk_persona=<?php echo $datos['pk_persona']; ?>'">Editar</button></td>
+					<td> <button class="btn btn-danger" onclick="confirmar1('<?php echo $datos['pk_empleado']; ?>')">🗑️</button></td>
 				</tr>
 			<?php
 		}
@@ -873,6 +939,177 @@ if (isset($_POST['cargo']))
 
 			
 	}
+	// Método que recibe los valores de eliminar_marca.php
+		static public function eliminarTrabajadorController($pk_empleado){
+
+			if(isset($pk_empleado)){
+
+				if(!empty($pk_empleado)){
+
+					$respuesta = Datos::eliminarTrabajadorModelo($pk_empleado, "empleado");
+
+					if($respuesta == "ok"){
+
+						echo '<script>
+							(async () => {
+					
+							const a = await Swal.fire({
+								icon: "success",
+								title: "El Trabajador fue eliminada con éxito 😄👍",
+								html: "El Trabajador <b>'.$pk_empleado.'</b>, fue eliminada",
+								footer: "Presiona OK para continuar."
+							});
+							
+							if(a){
+								window.location="index.php?action=mostrar_trabajador";
+							}
+
+							})()
+
+							</script>';
+
+					}
+					else if($respuesta == "noexiste"){
+
+						echo '<script>
+						Swal.fire({
+								icon: "info",
+								timer: 5000,
+								timerProgressBar: true,
+								title: "El Trabajador: '.$pk_empleado.', no existe",
+								text: "Ingrese un producto existente",
+								footer: "Este mensaje cerrará automáticamente en 5s."
+							});
+						</script>
+						';
+
+					}
+					else{
+
+						echo '<script>
+						Swal.fire({
+								icon: "error",
+								timer: 5000,
+								timerProgressBar: true,
+								title: "Ups!😢<br> Ocurrió un error al eliminar el producto:",
+								html: "<b>'.$pk_empleado.'</b>"
+							});
+						</script>
+						';
+
+					}
+
+				}else{
+
+					echo '<script>
+							Swal.fire({
+								icon: "warning",
+								timer: 5000,
+								timerProgressBar: true,
+								title: "Porfavor ingrese el trabajador"
+							});
+						</script>
+						';
+					
+				}
+
+			}
+		}
+		// Método que recibe los valores de editar_proveedor.php
+		static public function editarTrabajadorController($pk_persona, $pk_cargo, $pk_empleado){
+
+			if(isset($_POST['nvoPersona'])||isset($_POST['nvoCargo'])){
+
+				if(!empty($_POST['nvoPersona']) || !empty($_POST['nvoCargo'])){
+
+					$datos = array('valor_idem'=>$pk_empleado, 'valor_nomem'=>$pk_persona, 'valor_caem'=>$pk_cargo, 'valor_nvoNombre'=>$_POST['nvoPersona'], 'valor_nvoCargo'=>$_POST['nvoCargo']);
+					
+
+					$respuesta = Datos::editarTrabajadorModelo($datos, "empleado");
+
+					if($respuesta == "ok"){
+
+						echo '<script>
+							(async () => {
+							var notificacion = new Audio("vistas/audio/notificacion_ok.mp3");
+							notificacion.play();
+							const a = await Swal.fire({
+								icon: "success",
+								title: "El proveedor fue modificado con éxito 😄👍",
+								html: "El proveedor <b>'.$pk_proveedor.' '.$nombre.'</b>, fue modificado correctamente</b>",
+								footer: "Presiona OK para continuar."
+							});
+							
+							if(a){
+								window.location="index.php?opcion=ver_proveedores";
+							}
+
+							})()
+
+							</script>';
+
+					}
+					else if($respuesta == "noexiste"){
+
+						echo '<script>
+						Swal.fire({
+								icon: "info",
+								timer: 5000,
+								timerProgressBar: true,
+								title: "El proveedor con el #ID: '.$pk_proveedor.', no existe",
+								text: "Ingrese un proveedor existente",
+								footer: "Este mensaje cerrará automáticamente en 5s."
+							});
+						</script>
+						';
+
+					}
+					else if($respuesta == "esigual"){
+
+						echo '<script>
+						Swal.fire({
+								icon: "info",
+								timer: 5000,
+								timerProgressBar: true,
+								title: "Modifique almenos un campo del proveedor",
+								text: "Ingrese nueva información del proveedor",
+								footer: "Este mensaje cerrará automáticamente en 5s."
+							});
+						</script>
+						';
+
+					}
+					else{
+
+						echo '<script>
+						Swal.fire({
+								icon: "error",
+								timer: 5000,
+								timerProgressBar: true,
+								title: "Ups!😢<br> Ocurrió un error al modificar al proveedor:",
+								html: "<b>'.$nombreProveedor.'</b>"
+							});
+						</script>
+						';
+
+					}
+
+				}else{
+
+					echo '<script>
+							Swal.fire({
+								icon: "warning",
+								timer: 5000,
+								timerProgressBar: true,
+								title: "Porfavor llene todos los campos del formulario"
+							});
+						</script>
+						';
+					
+				}
+
+			}
+		}
 	static public function vistaAlmacenController()
 	{
 		$respuesta = Datos::vistaAlmacenModel("almacen");
@@ -916,20 +1153,20 @@ if (isset($_POST['almacen']))
 
 			
 	}
-	static public function vistaInventarioController()
+	static public function vistaProductoController()
 	{
-		
-		$respuesta = Datos::mostrarProductoModel("producto", 5);
+		$marca="marca";
+		$respuesta = Datos::mostrarProductoModel("producto", 6,$marca);
 		foreach($respuesta as $row => $datos)
 		{
 			?>
 			
-  <div class="col">
+   <div class="col">
 			<div class="container1" >
               <div class="card">
-			
-  
-				
+
+
+
 					  <div class="card-head">
       <img src="vista/imagenes/dulce.jpg" width="50px;" margin="20px;" > 
       <?php echo '<img src="'.$datos['fotop'].'"class="product-img" >'; ?>
@@ -948,53 +1185,76 @@ if (isset($_POST['almacen']))
                   Descripcion
                 </span>
         </span>
-        <span class="product-caption">
-                Basket Ball Collection
-              </span>
+        <span class="product-title">
+               <b> <?php echo $datos['codigo']; ?></b>
+                <span class="badge">
+                  Codigo
+                </span>
+        </span>
+        <span class="product-title">
+               <b> <?php echo $datos['nombre']; ?></b>
+                <span class="badge">
+                  Marca
+                </span>
+        </span>
+        
+        </span>
         <span class="product-rating">
                 <i class="fa fa-star"></i>
+                <b> <?php echo $datos['pieza']; ?></b>
                 <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star grey"></i>
+                
               </span>
-      </div>
-      <div class="product-properties">
-        <span class="product-size">
-                <h4>Size</h4>
-                <ul class="ul-size">
-                  <li><a href="#">7</a></li>
-                  <li><a href="#">8</a></li>
-                  <li><a href="#">9</a></li>
-                  <li><a href="#" class="active">10</a></li>
-                  <li><a href="#">11</a></li>
-                </ul>
+        <span class="product-caption">
+
+                <span class="badge">
+                  Pieza
+                </span>
               </span>
         
-        
       </div>
+
+      
     </div>
 
-				
+
 					<button id="btn-editar" class="btn btn-warning" >Editar</button>
-					 <button class="btn btn-danger" >🗑️</button>
-					
+					  <button class="btn btn-danger" onclick="confirmar2('<?php echo $datos['pk_producto']; ?>')">🗑️</button>
+
 				</div>
 			</div>
 				</div>
+				<script type="text/javascript">
+          function confirmar2(pk_producto){
+            Swal.fire({
+              title: 'Estás seguro?',
+              html: "Se eliminará el producto: <b>"+pk_producto+"</b>",
+              icon: 'warning',
+              showCancelButton: true,
+              cancelButtonText: "Cancelar",
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Si, eliminar!'
+            }).then((result) => {
+              if (result.value) {
+                window.location="index.php?action=eliminar_producto&pk_producto="+pk_producto;
+              }
+            })
+          };
+        </script>
 
 				
 			<?php
 		}
 	}
-	static public function paginacionInventarioController()
+	static public function paginacionProductoController()
 	{
 		
-		$respuesta = Datos::paginacionProductoModel("producto", 5);
+		$respuesta = Datos::paginacionProductoModel("producto", 6);
 		
 			if($_GET['pagina']>$respuesta['valor_paginas']){
 					echo '<script>
-					window.location="index.php?action=mostrar_inventario&pagina=1";
+					window.location="index.php?action=mostrar_producto&pagina=1";
 					</script>';
 			}
 			?> 
@@ -1002,19 +1262,19 @@ if (isset($_POST['almacen']))
 			  	<ul class="pagination justify-content-center">
 				    <li class="page-item
 				    <?php echo $_GET['pagina']<=1 ? 'disabled' : '' ?>">
-				      <a class="page-link" href="<?php echo 'index.php?action=mostrar_inventario&pagina='.($_GET['pagina']-1) ?>" tabindex="-1">Anterior</a>
+				      <a class="page-link" href="<?php echo 'index.php?action=mostrar_producto&pagina='.($_GET['pagina']-1) ?>" tabindex="-1">Anterior</a>
 				    </li>
 
 					<?php for($i=0; $i<$respuesta['valor_paginas']; $i++): ?>
 				    <li class="page-item
 				    <?php echo $_GET['pagina']==$i+1 ? 'active' : '' ?>">
-				    	<a class="page-link" href="<?php echo 'index.php?action=mostrar_inventario&pagina='.($i+1) ?>"><?php echo ($i+1); ?></a>
+				    	<a class="page-link" href="<?php echo 'index.php?action=mostrar_producto&pagina='.($i+1) ?>"><?php echo ($i+1); ?></a>
 				    </li>
 					<?php endfor ?>
 
 				    <li class="page-item
 				    <?php echo $_GET['pagina']>=$respuesta['valor_paginas'] ? 'disabled' : '' ?>">
-				      <a class="page-link" href="<?php echo 'index.php?action=mostrar_inventario&pagina'.($_GET['pagina']+1) ?>">Siguiente</a>
+				      <a class="page-link" href="<?php echo 'index.php?action=mostrar_producto&pagina'.($_GET['pagina']+1) ?>">Siguiente</a>
 					</li>
 				</ul>
 				</nav>

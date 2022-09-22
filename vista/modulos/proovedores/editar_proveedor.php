@@ -17,12 +17,12 @@
     <div class="form-group">
         <label for="marca"><b>Persona:</b></label>
          <select class="js-example-basic-single"  id="nvoPersona" placeholder="" name="nvoPersona" style="width: 100%" required >
-            <option selected > <?php echo $_GET['persona']; ?> <?php echo $_GET['paterno']; ?> <?php echo $_GET['materno']; ?></option>
+            <option selected > Modificar....</option>
             <?php
-              $proveedor = Controller::consultaProveedor();
+              $proveedor = Controller::consultaPersona();
               foreach ($proveedor as $datos1 =>$valor1)
               {
-                echo '<option value="'.$valor1["fk_persona"].'">'.$valor1["nombrep"].' '.$valor1["apellidop"].' '.$valor1["apellidom"].'</option>';
+                echo '<option value="'.$valor1["pk_persona"].'">'.$valor1["nombrep"].' '.$valor1["apellidop"].' '.$valor1["apellidom"].'</option>';
               }
             ?>
           </select>
@@ -31,13 +31,13 @@
   </div>
    <div class="form-group">
         <label for="marca"><b>Marca:</b></label>
-         <select class="js-example-basic-single"  id="nvoMmarca" placeholder="" name="nvoMarca" style="width: 100%" required >
-            <option selected ><?php echo $_GET['marca']; ?></option>
+         <select class="js-example-basic-single"  id="nvoMarca" placeholder="" name="nvoMarca" style="width: 100%" required >
+            <option selected >Modificar...</option>
             <?php
-              $marca = Controller::consultaProveedor();
+              $marca = Controller::consultaMarca();
               foreach ($marca as $datos2 =>$valor2)
               {
-                echo '<option value="'.$valor2["fk_marca"].'">'.$valor2["nombre"].'</option>';
+                echo '<option value="'.$valor2["pk_marca"].'">'.$valor2["nombre"].'</option>';
               }
             ?>
           </select>
@@ -55,10 +55,10 @@
 
 <?php
 
-  if(isset($_GET['pk_proveedor'])&&isset($_GET['fk_persona']) && isset($_GET['fk_marca'])){
+  if(isset($_GET['pk_proveedor'])&&isset($_GET['pk_persona']) && isset($_GET['pk_marca'])){
 
   $calcular = new Controller();
-  $calcular -> editarProveedorController($_GET['fk_persona'], $_GET['fk_marca'], $_GET['pk_proveedor'], $_GET['persona']);
+  $calcular -> editarProveedorController($_GET['pk_persona'], $_GET['pk_marca'], $_GET['pk_proveedor']);
 
   }
 

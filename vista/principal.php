@@ -5,7 +5,7 @@
 
 <header class="header" id="header">
         <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
-        <div class="header_img"> <img src="https://scontent.ftpq2-1.fna.fbcdn.net/v/t39.30808-6/293016732_416430833856818_649140442853860777_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=2TdqhjPHZWUAX8WEBAB&_nc_ht=scontent.ftpq2-1.fna&oh=00_AT_WUG30f64uWeKqVWud1ZurKUW2RTcJQBNbDhIrfTd-Tw&oe=631C8B07" alt=""> </div>
+        <div class="header_img"> <img src="vista/imagenes/dulce.jpg" alt=""> </div>
     </header>
     <div class="l-navbar" id="nav-bar">
         <nav class="nav">

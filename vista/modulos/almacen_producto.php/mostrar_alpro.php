@@ -2,7 +2,7 @@
   if(isset($_GET['pagina']) && $_GET['pagina']>=1){
 ?>
 <div class="col-md-12">
-        <h1> Seccion Inventarios </h1>
+        <h1>  Inventarios </h1>
         
     </div>
     <div clase="col-md-12">
@@ -24,7 +24,7 @@
   
      <?php
             $vistaPuesto = new Controller();
-            $vistaPuesto -> vistaInventarioController();
+            $vistaPuesto -> vistaProductoController();
              
           ?>
           
@@ -51,7 +51,7 @@
 <br>
 <?php
 $paginacionPuesto = new Controller();
-            $paginacionPuesto -> paginacionInventarioController();
+            $paginacionPuesto -> paginacionProductoController();
           
  ?>
 </div>

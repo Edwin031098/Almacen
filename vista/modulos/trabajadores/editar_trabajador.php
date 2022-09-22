@@ -1,8 +1,7 @@
 
-
 <meta charset="utf-8">
 <div class="col-md-12">
-        <h1> Agregar Empleado</h1>
+        <h1> Editar Empleado</h1>
         
     </div>
     <div clase="col-md-12">
@@ -18,8 +17,8 @@
     
     <div class="form-group">
         <label for="marca"><b>Persona:</b></label>
-         <select class="js-example-basic-single"  id="persona" placeholder="persona" name="persona" style="width: 100%" required >
-            <option selected>Persona...</option>
+         <select class="js-example-basic-single"  id="nvoPersona"  name="nvoPersona" style="width: 100%" required >
+            <option selected >Modificar....</option>
             <?php
               $persona = Controller::consultaPersona();
               foreach ($persona as $datos1 =>$valor1)
@@ -31,8 +30,8 @@
     </div>
     <div class="form-group">
         <label for="marca"><b>Cargo:</b></label>
-         <select class="js-example-basic-single"  id="cargo" placeholder="cargo" name="cargo" style="width: 100%" required >
-            <option selected>Cargo...</option>
+         <select class="js-example-basic-single"  id="nvoCargo" placeholder="cargo" name="nvoCargo" style="width: 100%" required >
+            <option selected>Modificar....</option>
             <?php
               $cargo = Controller::consultaCargo();
               foreach ($cargo as $datos1 =>$valor1)
@@ -55,7 +54,13 @@
 <br>
  
 
-  <?php 
-    $registroM = new Controller();
-    $registroM -> registroTrabajadorController();
-   ?>
+ <?php
+
+  if(isset($_GET['pk_empleado'])&&isset($_GET['pk_persona']) && isset($_GET['pk_cargo'])){
+
+  $calcular = new Controller();
+  $calcular -> editarTrabajadorController($_GET['pk_persona'], $_GET['pk_cargo'], $_GET['pk_empleado']);
+
+  }
+
+?>
