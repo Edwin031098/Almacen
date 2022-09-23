@@ -32,6 +32,10 @@ class Paginas
 			$module = "vista/modulos/productos/agregar_producto.php";
 
 		}
+		else if($enlaces == "editar_producto"){
+			$module = "vista/modulos/productos/editar_producto.php";
+
+		}
 		else if($enlaces == "eliminar_producto"){
 			$module = "vista/modulos/productos/eliminar_producto.php";
 

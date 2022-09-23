@@ -149,6 +149,7 @@ class Controller
 			';
 
 			$ruta = "controlador/fotos/".$nombre_archivo;
+			$ruta2 =$nombre_archivo;
 
 			if(move_uploaded_file($archivo, $ruta))
 			{
@@ -164,7 +165,7 @@ class Controller
 					</script>
 				';
 			}
-			$datosController = array("pro"=>$_POST["producto"], "cod"=>$_POST["codigo"], "e"=>$ruta, "des"=>$_POST["descripcion"],"pz"=>$_POST["pieza"],"ma"=>$_POST["marca"]);
+			$datosController = array("pro"=>$_POST["producto"], "cod"=>$_POST["codigo"], "e"=>$ruta, "des"=>$_POST["descripcion"],"pz"=>$_POST["pieza"],"ma"=>$_POST["marca"],"a"=>$ruta2);
 
 			$respuesta = Datos::registrosProductoModel($datosController, "producto");
 
@@ -256,6 +257,7 @@ class Controller
 
 			}
 		}
+		
 	static public function registroMarcaController(){
 
 if (isset($_POST['marca']))
@@ -1217,8 +1219,9 @@ if (isset($_POST['almacen']))
       
     </div>
 
+                    <button id="btn-editar" class="btn btn-warning" onclick="window.location='index.php?action=editar_producto&pk_producto=<?php echo $datos['pk_producto']; ?>&producto=<?php echo $datos['producto']; ?>&codigo=<?php echo $datos['codigo']; ?>&fotop=<?php echo $datos['fotop']; ?>&descripcion=<?php echo $datos['descripcion']; ?>&pieza=<?php echo $datos['pieza']; ?>&pk_marca=<?php echo $datos['pk_marca']; ?>&comentario=<?php echo $datos['comentario']; ?>'">Editar</button>
 
-					<button id="btn-editar" class="btn btn-warning" >Editar</button>
+					
 					  <button class="btn btn-danger" onclick="confirmar2('<?php echo $datos['pk_producto']; ?>')">🗑️</button>
 
 				</div>
@@ -1289,6 +1292,127 @@ if (isset($_POST['almacen']))
 				}
 
 		}	
+		// Método que recibe los valores de eliminar_marca.php
+		static public function editarProductoController($pk_producto,$producto,$codigo,$fotop,$descripcion,$pieza,$pk_marca,$comentario){
+
+			if(isset($_POST['nproducto'])){
+
+				if(!empty($_POST['nproducto'])){
+					$archivo = $_FILES['nfotop']['tmp_name'];
+			$nombre_archivo = $_FILES['nfotop']['name'];
+			$tipo = $_FILES['nfotop']['type'];
+			$tamanio = $_FILES['nfotop']['size'];
+
+			echo'<script>
+					var archivo = "'.$archivo.'"
+					alert("El nombre temporal es: "+archivo)
+					</script>
+			';
+			echo'<script>
+					var nombre = "'.$nombre_archivo.'"
+					alert("El nombre real es: "+nombre)
+					</script>
+			';
+			echo'<script>
+					var tipo = "'.$tipo.'"
+					alert("El tipo del archivo es: "+tipo)
+					</script>
+			';
+			echo'<script>
+					var tamanio = "'.$tamanio.'"
+					alert("El el tamanio del archivo es: "+tamanio)
+					</script>
+			';
+
+			$rutan = "controlador/fotos/".$nombre_archivo;
+			$ruta2n =$nombre_archivo;
+
+			if(move_uploaded_file($archivo, $rutan))
+			{
+				echo '<script>
+					alert("archivo copiado exitosamnte")
+					</script>
+				';
+			}
+			else
+			{
+				'<script>
+					alert("archivo NO copiado")
+					</script>
+				';
+			}
+					$tablam="marca";
+					$datos = array('valor_idp'=>$pk_producto, 'valor_p'=>$producto, 'valor_c'=>$codigo,'valor_nf'=>$fotop,'valor_d'=>$descripcion,'valor_pi'=>$pieza,'valor_m'=>$pk_marca,'valor_co'=>$comentario, 'valor_np'=>$_POST['nproducto'], 'valor_nc'=>$_POST['ncodigo'],'f'=>$rutan,'e'=>$ruta2n,  'valor_nd'=>$_POST['ndescripcion'], 'valor_npi'=>$_POST['npieza'], 'valor_nma'=>$_POST['nmarca']);
+
+					$respuesta = Datos::editarProductoModelo($datos, "producto",$tablam);
+
+					if($respuesta == "ok"){
+
+						echo '<script>
+							(async () => {
+					
+							const a = await Swal.fire({
+								icon: "success",
+								title: "El almacen fue eliminada con éxito 😄👍",
+								html: "La marca <b>'.$pk_almacen.'</b>, fue eliminada",
+								footer: "Presiona OK para continuar."
+							});
+							
+							if(a){
+								window.location="index.php?action=mostrar_almacen";
+							}
+
+							})()
+
+							</script>';
+
+					}
+					else if($respuesta == "noexiste"){
+
+						echo '<script>
+						Swal.fire({
+								icon: "info",
+								timer: 5000,
+								timerProgressBar: true,
+								title: "El almacen: '.$pk_almacen.', no existe",
+								text: "Ingrese una marca existente",
+								footer: "Este mensaje cerrará automáticamente en 5s."
+							});
+						</script>
+						';
+
+					}
+					else{
+
+						echo '<script>
+						Swal.fire({
+								icon: "error",
+								timer: 5000,
+								timerProgressBar: true,
+								title: "Ups!😢<br> Ocurrió un error al eliminar la marca:",
+								html: "<b>'.$pk_almacen.'</b>"
+							});
+						</script>
+						';
+
+					}
+
+				}else{
+
+					echo '<script>
+							Swal.fire({
+								icon: "warning",
+								timer: 5000,
+								timerProgressBar: true,
+								title: "Porfavor ingrese una marca"
+							});
+						</script>
+						';
+					
+				}
+
+			}
+		}
 			
 
 }

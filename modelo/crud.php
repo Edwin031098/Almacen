@@ -316,7 +316,7 @@ static public function registrosEmpleadoModel($DatosModel, $tabla)
 	}
 	static public function registrosProductoModel($DatosModel, $tabla)
 	{
-		$ejecucion = Conexion::getConection()->prepare("INSERT INTO $tabla (producto, codigo, fotop, descripcion, pieza,fk_marca) VALUES (:producto, :codigo, :fotop, :descripcion, :pieza, :marca)");
+		$ejecucion = Conexion::getConection()->prepare("INSERT INTO $tabla (producto, codigo, fotop, descripcion, pieza,fk_marca,comentario) VALUES (:producto, :codigo, :fotop, :descripcion, :pieza, :marca, :com)");
 
 		
 		$ejecucion ->bindParam(":producto", $DatosModel["pro"], PDO::PARAM_STR);
@@ -325,6 +325,7 @@ static public function registrosEmpleadoModel($DatosModel, $tabla)
 		$ejecucion ->bindParam(":descripcion", $DatosModel["des"], PDO::PARAM_STR);
         $ejecucion ->bindParam(":pieza", $DatosModel["pz"], PDO::PARAM_STR);
 		$ejecucion ->bindParam(":marca", $DatosModel["ma"], PDO::PARAM_STR);
+		$ejecucion ->bindParam("com",$DatosModel["a"],PDO::PARAM_STR);
 		
 
 		if($ejecucion ->execute())
@@ -342,7 +343,7 @@ static public function registrosEmpleadoModel($DatosModel, $tabla)
 	static public function mostrarProductoModel($tabla, $articulosXPagina,$marca)
 	{
 		$iniciar = ($_GET['pagina']-1)*$articulosXPagina;
-		$consulta = Conexion::getConection()->prepare("SELECT COUNT(producto),pk_producto,producto,codigo,fotop,descripcion,pieza,fk_marca,pk_marca,nombre FROM $tabla,$marca WHERE $tabla.fk_marca=$marca.pk_marca GROUP BY producto ORDER BY nombre LIMIT :iniciar, :articulosXPagina;");
+		$consulta = Conexion::getConection()->prepare("SELECT COUNT(producto),pk_producto,producto,codigo,fotop,descripcion,pieza,fk_marca,pk_marca,nombre,comentario FROM $tabla,$marca WHERE $tabla.fk_marca=$marca.pk_marca GROUP BY producto ORDER BY nombre LIMIT :iniciar, :articulosXPagina;");
 		$consulta -> bindParam(':iniciar', $iniciar, PDO::PARAM_INT);
 		$consulta -> bindParam(':articulosXPagina', $articulosXPagina, PDO::PARAM_INT);
 		
@@ -378,6 +379,72 @@ static public function registrosEmpleadoModel($DatosModel, $tabla)
 		return $datos;
 		$consulta -> close();
 
+	}
+	// Método que cambia todos los campos de un proveedor
+	static public function editarProductoModelo($datos, $tabla,$tablam){
+
+		
+
+		// Información actual del proveedor
+		$pk_proveedor = $datos['valor_idProveedor'];
+		$pk_persona = $datos['valor_nombreProveedor'];
+		$pk_marca = $datos['valor_marcaProveedor'];
+		
+
+		// Nuevos valores que se establecerán
+		$nvoPersona = $datos['valor_nvoNombre'];
+		$nvoMarca = $datos['valor_nvoMarca'];
+		
+
+		// Verificar que almenos se modificó un campo
+		if(($pk_persona != $nvoPersona) || ($pk_marca != $nvoMarca)){
+			$tablap="persona";
+			$tablam="marca";
+
+			$datos = Conexion::getConection()->prepare("SELECT fk_persona,fk_marca FROM $tabla,$tablam,$tablap WHERE pk_proveedor=:pk_proveedor  AND $tabla.fk_persona=$tablap.pk_persona AND $tabla.fk_marca=$tablam.pk_marca");
+			$datos -> bindParam(':pk_proveedor', $pk_proveedor);
+			
+			$datos -> execute();
+			$resultados = $datos->fetch(PDO::FETCH_ASSOC);
+
+			if(empty($resultados)){
+
+				return "noexiste";
+			}
+			else{
+                 
+                 $tablap="persona";
+			$tablam="marca";
+				$datos2 = Conexion::getConection()->prepare("UPDATE $tabla SET fk_persona=:nvoPersona, fk_marca=:nvoMarca WHERE pk_proveedor=:pk_proveedor  AND fk_persona=fk_persona AND fk_marca=fk_marca");
+				$datos2 -> bindParam(':pk_proveedor', $pk_proveedor);
+				
+				$datos2 -> bindParam(':nvoPersona', $nvoPersona);
+				$datos2 -> bindParam(':nvoMarca', $nvoMarca);
+				
+				$datos2->execute();
+
+
+				if($datos2->execute()){
+
+					return "ok";
+				}
+				else{
+
+					return "error";
+				}
+
+				$datos2->close();
+			}
+
+			$resultados->closeCursor();
+			$datos->close();
+			
+		}
+		else{
+
+			return "esigual";
+		}
+		
 	}
 	
 	static public function vistaProveedorModel($tablap,$tablam,$tabla)
