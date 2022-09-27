@@ -76,7 +76,94 @@ static public function registrosEmpleadoModel($DatosModel, $tabla)
 		}
 		$ejecucion ->close();
 	}
-	
+	// Método que cambia todos los campos de un proveedor
+	static public function editarPersonaModelo($datos, $tabla){
+
+		
+
+		// Información actual del proveedor
+		$pk_persona = $datos['valor_idp'];
+		$nombrep= $datos['vnom'];
+		$apellidop= $datos['vap'];
+		$apellidom = $datos['vam'];
+		$fotop = $datos['vfoto'];
+		$cel = $datos['vcel'];
+		$sexo = $datos['vse'];
+		$direccion = $datos['vdi'];
+		$tipo = $datos['vti'];
+		$comentario = $datos['vcom'];
+		
+
+		// Nuevos valores que se establecerán
+		$nvnombrep = $datos['nvnom'];
+		$nvapellidop = $datos['nvapep'];
+		$nvapellidom = $datos['nvapem'];
+		$nvfotop = $datos['nvfoto'];
+		$nvcel = $datos['nvcel'];
+		$nvsexo = $datos['nvsex'];
+		$nvdireccion = $datos['nvdir'];
+		$nvtipo = $datos['nvti'];
+		$nvcomentario = $datos['nvcomentario'];
+		
+		
+
+		// Verificar que almenos se modificó un campo
+		if(($nombrep != $nvnombrep) || ($apellidop != $nvapellidop) || ($apellidom != $nvapellidom) || ($fotop != $nvfotop) ||($cel != $nvcel) || ($sexo != $nvsexo)|| ($direccion != $nvdireccion)|| ($tipo != $nvtipo) ||  ($comentario != $nvcomentario)){
+			
+			
+
+			$datos = Conexion::getConection()->prepare("SELECT nombrep,apellidop,apellidom,foto,cel,sexo,direccion,tipo,comentariop FROM $tabla WHERE pk_persona=:pk_persona  ");
+			$datos -> bindParam(':pk_persona', $pk_persona);
+			
+			$datos -> execute();
+			$resultados = $datos->fetch(PDO::FETCH_ASSOC);
+
+			if(empty($resultados)){
+
+				return "noexiste";
+			}
+			else{
+                 
+                 
+			
+				$datos2 = Conexion::getConection()->prepare("UPDATE $tabla SET nombrep=:nvnombrep, apellidop=:nvapellidop, apellidom=:nvapellidom,foto=:nvfotop, cel=:nvcel,sexo=:nvsexo, direccion=:nvdireccion, tipo=:nvtipo,comentariop=:nvcomentario WHERE pk_persona=:pk_persona");
+				$datos2 -> bindParam(':pk_persona', $pk_persona);
+				$datos2 -> bindParam(':nvnombrep', $nvnombrep);
+				$datos2-> bindParam(':nvapellidop', $nvapellidop);
+				$datos2 -> bindParam(':nvapellidom', $nvapellidom);
+				$datos2 -> bindParam(':nvfotop', $nvfotop);
+				$datos2 -> bindParam(':nvcel', $nvcel);
+				$datos2 -> bindParam(':nvsexo', $nvsexo);
+				$datos2 -> bindParam(':nvdireccion', $nvdireccion);
+				$datos2 -> bindParam(':nvtipo', $nvtipo);
+				$datos2 -> bindParam(':nvcomentario', $nvcomentario);
+				
+				
+				$datos2->execute();
+
+
+				if($datos2->execute()){
+
+					return "ok";
+				}
+				else{
+
+					return "error";
+				}
+
+				$datos2->close();
+			}
+
+			$resultados->closeCursor();
+			$datos->close();
+			
+		}
+		else{
+
+			return "esigual";
+		}
+		
+	}
 	// Método que elimina una marca con el nombre de la marca
 	
 	static public function registrosMarcaModel($DatosModel, $tabla)
@@ -639,6 +726,16 @@ static public function registrosEmpleadoModel($DatosModel, $tabla)
 
 		$consulta1->close();
 	}
+	public static function listadoDeAlmacen($tabla1)
+	{
+		$consulta1 = Conexion::getConection()->prepare("SELECT * FROM $tabla1 ORDER BY pk_almacen");
+
+		$consulta1->execute();
+
+		return $consulta1->fetchAll();
+
+		$consulta1->close();
+	}
 	public static function listadoDeProveedor($tabla1,$tabla2,$tabla3)
 	{
 		$consulta1 = Conexion::getConection()->prepare("SELECT pk_proveedor,fk_persona,fk_marca,nombrep,apellidop,apellidom,nombre FROM $tabla1,$tabla2,$tabla3 WHERE ($tabla2.pk_persona = $tabla1.fk_persona)&($tabla3.pk_marca = $tabla1.fk_marca)  ORDER BY pk_proveedor");
@@ -649,9 +746,9 @@ static public function registrosEmpleadoModel($DatosModel, $tabla)
 
 		$consulta1->close();
 	}
-	static public function vistaTrabajadorModel($tabla,$tablac,$tablap)
+	static public function vistaTrabajadorModel($tabla,$tablac,$tablap,$tablaa)
 	{
-		$consulta = Conexion::getConection()->prepare("SELECT pk_empleado,fk_persona,fk_cargo,pk_cargo,cargo,pk_persona,nombrep,apellidop,apellidom FROM $tabla,$tablac,$tablap WHERE ($tabla.fk_cargo=$tablac.pk_cargo)&($tabla.fk_persona=$tablap.pk_persona)  ORDER BY pk_empleado");
+		$consulta = Conexion::getConection()->prepare("SELECT pk_empleado,fk_persona,fk_cargo,pk_cargo,cargo,pk_persona,nombrep,apellidop,apellidom,pk_almacen,almacen FROM $tabla,$tablac,$tablap,$tablaa WHERE ($tabla.fk_cargo=$tablac.pk_cargo)&($tabla.fk_persona=$tablap.pk_persona)&($tabla.fk_almacen=$tablaa.pk_almacen)  ORDER BY pk_empleado");
 
 		$consulta->execute();
 
@@ -661,11 +758,12 @@ static public function registrosEmpleadoModel($DatosModel, $tabla)
 	}
 	static public function registrosTrabajadorModel($DatosModel, $tabla)
 	{
-		$ejecucionmarca = Conexion::getConection()->prepare("INSERT INTO $tabla (fk_cargo,fk_persona) VALUES (:cargo,:persona)");
+		$ejecucionmarca = Conexion::getConection()->prepare("INSERT INTO $tabla (fk_cargo,fk_persona,fk_almacen) VALUES (:cargo,:persona,:almacen)");
 
 		
 		$ejecucionmarca ->bindParam(":cargo", $DatosModel["ca"], PDO::PARAM_STR);
 		$ejecucionmarca ->bindParam(":persona", $DatosModel["fp"], PDO::PARAM_STR);
+		$ejecucionmarca ->bindParam(":almacen", $DatosModel["al"], PDO::PARAM_STR);
 		
 
 		if($ejecucionmarca ->execute())
@@ -723,19 +821,22 @@ static public function registrosEmpleadoModel($DatosModel, $tabla)
 		$pk_empleado = $datos['valor_idem'];
 		$pk_persona = $datos['valor_nomem'];
 		$pk_cargo = $datos['valor_caem'];
+		$pk_almacen=$datos['valor_alem'];
 		
 
 		// Nuevos valores que se establecerán
 		$nvoPersona = $datos['valor_nvoNombre'];
 		$nvoCargo = $datos['valor_nvoCargo'];
+		$nvoAlmacen=$datos['valor_nvoAlmacen'];
 		
 
 		// Verificar que almenos se modificó un campo
-		if(($pk_persona != $nvoPersona) || ($pk_cargo != $nvoCargo)){
+		if(($pk_persona != $nvoPersona) || ($pk_cargo != $nvoCargo)|| ($pk_almacen != $nvoAlmacen)){
 			$tablap="persona";
 			$tablac="cargo";
+			$tablaa="almacen";
 
-			$datos = Conexion::getConection()->prepare("SELECT fk_persona,fk_cargo FROM $tabla,$tablac,$tablap WHERE pk_empleado=:pk_empleado AND $tabla.fk_persona=$tablap.pk_persona AND $tabla.fk_cargo=$tablac.pk_cargo");
+			$datos = Conexion::getConection()->prepare("SELECT fk_persona,fk_cargo,fk_almacen FROM $tabla,$tablac,$tablap,$tablaa WHERE pk_empleado=:pk_empleado AND $tabla.fk_persona=$tablap.pk_persona AND $tabla.fk_cargo=$tablac.pk_cargo AND $tabla.fk_almacen=$tablaa.pk_almacen");
 			$datos -> bindParam(':pk_empleado', $pk_empleado);
 			
 			$datos -> execute();
@@ -748,11 +849,12 @@ static public function registrosEmpleadoModel($DatosModel, $tabla)
 			else{
 
 
-				$datos2 = Conexion::getConection()->prepare("UPDATE $tabla SET fk_persona=:nvoPersona, fk_cargo=:nvoCargo WHERE pk_empleado=:pk_empleado AND fk_persona=fk_persona AND fk_cargo=fk_cargo ");
+				$datos2 = Conexion::getConection()->prepare("UPDATE $tabla SET fk_persona=:nvoPersona, fk_cargo=:nvoCargo, fk_almacen=:nvoAlmacen WHERE pk_empleado=:pk_empleado AND fk_persona=fk_persona AND fk_cargo=fk_cargo AND fk_almacen=fk_almacen ");
 				$datos2 -> bindParam(':pk_empleado', $pk_empleado);
 				
 				$datos2 -> bindParam(':nvoPersona', $nvoPersona);
 				$datos2 -> bindParam(':nvoCargo', $nvoCargo);
+				$datos2 -> bindParam(':nvoAlmacen', $nvoAlmacen);
 				
 				$datos2->execute();
 

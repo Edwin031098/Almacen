@@ -16,29 +16,30 @@
     
     <div class="form-group" >
       <label for="nombre">Escriba el nombre</label>
-      <input type="text" class="form-control" id="nvnombre" placeholder="" name="nvnombre">
+      <input type="text" class="form-control" id="nvnombre" placeholder="" name="nvnombre" value="<?php echo $_GET['nombre'];?>">
     </div>
 
     <div class="form-group">
       <label for="appa">Escriba el apellido paterno</label>
-      <input type="text" class="form-control" id="nvappa" placeholder="" name="nvappa">
+      <input type="text" class="form-control" id="nvappa" placeholder="" name="nvappa"value="<?php echo $_GET['apellidop'];?>">
     </div>
 
     <div class="form-group">
       <label for="apma">Escriba el apellido materno</label>
-      <input type="text" class="form-control" id="nvapma" placeholder="" name="nvapma">
+      <input type="text" class="form-control" id="nvapma" placeholder="" name="nvapma"value="<?php echo $_GET['apellidom'];?>">
     </div>
 
     <div class="form-group">
       <label for="foto">Seleccione la foto</label>
       <input type="file" class="form-control" id="nvfoto" name="nvfoto">
+      <?php echo $_GET['comentario'];?>
     </div>
 
     
 
     <div class="form-group">
       <label for="tel">Escriba el telefono celular</label>
-      <input type="number" class="form-control" id="nvtel" placeholder="" name="nvtel">
+      <input type="number" class="form-control" id="nvtel" placeholder="" name="nvtel"value="<?php echo $_GET['cel'];?>">
     </div>
 
    
@@ -46,20 +47,20 @@
 
       <div class="form-group">
       <label for="sexo">Escriba el sexo</label>
-      <input type="text" class="form-control" id="nvsexo" placeholder="Hombre/Mujer" name="nvsexo">
+      <input type="text" class="form-control" id="nvsexo" placeholder="Hombre/Mujer" name="nvsexo"value="<?php echo $_GET['sexo'];?>">
            
     
   </div>
   <div class="form-group">
       <label for="dom">Escriba el domicilio</label>
-      <input type="text" class="form-control" id="nvdom" placeholder="" name="nvdom">
+      <input type="text" class="form-control" id="nvdom" placeholder="" name="nvdom"value="<?php echo $_GET['direccion'];?>">
            
     
   </div>
    <div class="form-group">
       <label for="dom">Seleccione el rol</label>
       
-      <select class="form-select" aria-label="Default select example" id="nvtip" placeholder="" name="nvtip">
+      <select class="form-select" aria-label="Default select example" id="nvtip" placeholder="" name="nvtip" value="<?php echo $_GET['tipo'];?>">
   <option selected>Selecciona el tipo</option>
   <option value="1">Empleado</option>
   <option value="2">Proveedor</option>
@@ -78,6 +79,10 @@
  
 
   <?php 
+   if(isset($_GET['nombre'])&isset($_GET['apellidop'])&isset($_GET['apellidom'])&isset($_GET['foto'])&isset($_GET['cel'])&isset($_GET['sexo'])&isset($_GET['direccion'])&isset($_GET['tipo'])&isset($_GET['comentario'])){
     $registro = new Controller();
-    $registro -> registroPersonaController();
+    $registro -> editarPersonaController($_GET['pk_persona'],$_GET['nombre'],$_GET['apellidop'],$_GET['apellidom'],$_GET['foto'],$_GET['cel'],$_GET['sexo'],$_GET['direccion'],$_GET['tipo'],$_GET['comentario']);
+   
+
+  }
    ?>

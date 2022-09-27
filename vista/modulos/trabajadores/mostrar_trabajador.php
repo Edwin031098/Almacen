@@ -21,6 +21,8 @@
 					<th>#</th>
 					<th>Persona</th>
 					<th>Cargo</th>
+					<th>Almacen</th>
+
 
 					
 					<th>Editar</th>

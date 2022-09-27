@@ -39,7 +39,7 @@ class Controller
 					
 				
 					<td><?php echo '<img src="'.$datos['foto'].'" width="150px;">'; ?></td>
-					<td><button id="btn-editar" class="btn btn-warning" onclick="window.location='index.php?action=editar_persona&pk_persona=<?php echo $datos['pk_almacen']; ?>&almacen=<?php echo $datos['almacen']; ?>&ubicacion=<?php echo $datos['ubicacion']; ?>'">Editar</button></td>
+					<td> <button id="btn-editar" class="btn btn-warning" onclick="window.location='index.php?action=editar_persona&pk_persona=<?php echo $datos['pk_persona']; ?>&nombre=<?php echo $datos['nombrep']; ?>&apellidop=<?php echo $datos['apellidop']; ?>&apellidom=<?php echo $datos['apellidom']; ?>&sexo=<?php echo $datos['sexo']; ?>&cel=<?php echo $datos['cel']; ?>&direccion=<?php echo $datos['direccion']; ?>&comentario=<?php echo $datos['comentariop']; ?>&tipo=<?php echo $datos['tipo']; ?>&foto=<?php echo $datos['foto']; ?>'">Editar</button></td>
 					<td> <button class="btn btn-danger" onclick="confirmar0('<?php echo $datos['pk_persona']; ?>')">🗑️</button></td>
 		
 
@@ -140,6 +140,127 @@ class Controller
 
 			
 	}
+	// Método que recibe los valores de eliminar_marca.php
+		static public function editarPersonaController($pk_persona,$nombre,$apellidop,$apellidom,$foto,$cel,$sexo,$direccion,$tipo,$comentario){
+
+			if(isset($_POST['nvnombre'])){
+
+				if(!empty($_POST['nvnombre'])){
+					$archivo = $_FILES['nvfoto']['tmp_name'];
+			$nombre_archivo = $_FILES['nvfoto']['name'];
+			$tipo = $_FILES['nvfoto']['type'];
+			$tamanio = $_FILES['nvfoto']['size'];
+
+			echo'<script>
+					var archivo = "'.$archivo.'"
+					alert("El nombre temporal es: "+archivo)
+					</script>
+			';
+			echo'<script>
+					var nombre = "'.$nombre_archivo.'"
+					alert("El nombre real es: "+nombre)
+					</script>
+			';
+			echo'<script>
+					var tipo = "'.$tipo.'"
+					alert("El tipo del archivo es: "+tipo)
+					</script>
+			';
+			echo'<script>
+					var tamanio = "'.$tamanio.'"
+					alert("El el tamanio del archivo es: "+tamanio)
+					</script>
+			';
+
+			$rutan = "controlador/fotos/".$nombre_archivo;
+			$ruta2n =$nombre_archivo;
+
+			if(move_uploaded_file($archivo, $rutan))
+			{
+				echo '<script>
+					alert("archivo copiado exitosamnte")
+					</script>
+				';
+			}
+			else
+			{
+				'<script>
+					alert("archivo NO copiado")
+					</script>
+				';
+			}
+					
+					$datos = array('valor_idp'=>$pk_persona, 'vnom'=>$nombre, 'vap'=>$apellidop,'vam'=>$apellidom,'vfoto'=>$foto,'vcel'=>$cel,'vse'=>$sexo,'vdi'=>$direccion,'vti'=>$tipo, 'vcom'=>$comentario, 'nvnom'=>$_POST['nvnombre'],'nvfoto'=>$rutan,'nvcomentario'=>$ruta2n,  'nvapep'=>$_POST['nvappa'], 'nvapem'=>$_POST['nvapma'], 'nvcel'=>$_POST['nvtel'], 'nvsex'=>$_POST['nvsexo'], 'nvdir'=>$_POST['nvdom'], 'nvti'=>$_POST['nvtip']);
+
+					$respuesta = Datos::editarPersonaModelo($datos, "persona");
+
+					if($respuesta == "ok"){
+
+						echo '<script>
+							(async () => {
+					
+							const a = await Swal.fire({
+								icon: "success",
+								title: "El almacen fue eliminada con éxito 😄👍",
+								html: "La marca <b>'.$pk_almacen.'</b>, fue eliminada",
+								footer: "Presiona OK para continuar."
+							});
+							
+							if(a){
+								window.location="index.php?action=mostrar_almacen";
+							}
+
+							})()
+
+							</script>';
+
+					}
+					else if($respuesta == "noexiste"){
+
+						echo '<script>
+						Swal.fire({
+								icon: "info",
+								timer: 5000,
+								timerProgressBar: true,
+								title: "El almacen: '.$pk_almacen.', no existe",
+								text: "Ingrese una marca existente",
+								footer: "Este mensaje cerrará automáticamente en 5s."
+							});
+						</script>
+						';
+
+					}
+					else{
+
+						echo '<script>
+						Swal.fire({
+								icon: "error",
+								timer: 5000,
+								timerProgressBar: true,
+								title: "Ups!😢<br> Ocurrió un error al eliminar la marca:",
+								html: "<b>'.$pk_almacen.'</b>"
+							});
+						</script>
+						';
+
+					}
+
+				}else{
+
+					echo '<script>
+							Swal.fire({
+								icon: "warning",
+								timer: 5000,
+								timerProgressBar: true,
+								title: "Porfavor ingrese una marca"
+							});
+						</script>
+						';
+					
+				}
+
+			}
+		}
 	// Método que recibe los valores de eliminar_marca.php
 		static public function eliminarPersonaController($pk_persona){
 
@@ -703,6 +824,12 @@ if (isset($_POST['marca']))
      	$respuesta1 = Datos::listadoDeCargo($tabla1);
      	return $respuesta1;
      }
+      public static function consultaAlmacen()
+     {
+     	$tabla1 = "almacen";
+     	$respuesta1 = Datos::listadoDeAlmacen($tabla1);
+     	return $respuesta1;
+     }
 		
 		static public function vistaProveedorController()
 	{
@@ -1062,7 +1189,8 @@ if (isset($_POST['marca']))
 	{
 		$tablac="cargo";
 		$tablap="persona";
-		$respuesta = Datos::vistaTrabajadorModel("empleado",$tablac,$tablap);
+		$tablaa="almacen";
+		$respuesta = Datos::vistaTrabajadorModel("empleado",$tablac,$tablap,$tablaa);
 		foreach($respuesta as $row => $datos)
 		{
 			?>
@@ -1072,11 +1200,12 @@ if (isset($_POST['marca']))
 					<?php echo $datos['apellidop']; ?>
 					<?php echo $datos['apellidom']; ?></td>
 						<td><?php echo $datos['cargo']; ?></td>
+						<td><?php echo $datos['almacen']; ?></td>
 
 					
 				
 					
-					<td><button id="btn-editar" class="btn btn-warning" onclick="window.location='index.php?action=editar_trabajador&pk_empleado=<?php echo $datos['pk_empleado']; ?>&persona=<?php echo $datos['nombrep']; ?>&paterno=<?php echo $datos['apellidop']; ?>&materno=<?php echo $datos['apellidom']; ?>&pk_cargo=<?php echo $datos['pk_cargo']; ?>&cargo=<?php echo $datos['cargo']; ?>&pk_persona=<?php echo $datos['pk_persona']; ?>'">Editar</button></td>
+					<td><button id="btn-editar" class="btn btn-warning" onclick="window.location='index.php?action=editar_trabajador&pk_empleado=<?php echo $datos['pk_empleado']; ?>&persona=<?php echo $datos['nombrep']; ?>&paterno=<?php echo $datos['apellidop']; ?>&materno=<?php echo $datos['apellidom']; ?>&pk_cargo=<?php echo $datos['pk_cargo']; ?>&cargo=<?php echo $datos['cargo']; ?>&pk_persona=<?php echo $datos['pk_persona']; ?>&pk_almacen=<?php echo $datos['pk_almacen']; ?>&almacen=<?php echo $datos['almacen']; ?>'">Editar</button></td>
 					<td> <button class="btn btn-danger" onclick="confirmar1('<?php echo $datos['pk_empleado']; ?>')">🗑️</button></td>
 				</tr>
 			<?php
@@ -1086,7 +1215,7 @@ if (isset($_POST['marca']))
 
 if (isset($_POST['cargo']))
 		{
-			$datosControllerm = array("fp"=>$_POST["persona"],"ca"=>$_POST["cargo"]);
+			$datosControllerm = array("fp"=>$_POST["persona"],"ca"=>$_POST["cargo"],"al"=>$_POST["almacen"]);
 
 			$respuestam = Datos::registrosTrabajadorModel($datosControllerm, "empleado");
 
@@ -1201,13 +1330,13 @@ if (isset($_POST['cargo']))
 			}
 		}
 		// Método que recibe los valores de editar_proveedor.php
-		static public function editarTrabajadorController($pk_persona, $pk_cargo, $pk_empleado){
+		static public function editarTrabajadorController($pk_persona, $pk_cargo, $pk_empleado,$pk_almacen){
 
 			if(isset($_POST['nvoPersona'])||isset($_POST['nvoCargo'])){
 
 				if(!empty($_POST['nvoPersona']) || !empty($_POST['nvoCargo'])){
 
-					$datos = array('valor_idem'=>$pk_empleado, 'valor_nomem'=>$pk_persona, 'valor_caem'=>$pk_cargo, 'valor_nvoNombre'=>$_POST['nvoPersona'], 'valor_nvoCargo'=>$_POST['nvoCargo']);
+					$datos = array('valor_idem'=>$pk_empleado, 'valor_nomem'=>$pk_persona, 'valor_caem'=>$pk_cargo, 'valor_alem'=>$pk_empleado, 'valor_nvoNombre'=>$_POST['nvoPersona'], 'valor_nvoCargo'=>$_POST['nvoCargo'], 'valor_nvoAlmacen'=>$_POST['nvoAlmacen']);
 					
 
 					$respuesta = Datos::editarTrabajadorModelo($datos, "empleado");

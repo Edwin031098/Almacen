@@ -42,6 +42,19 @@
             ?>
           </select>
     </div>
+    <div class="form-group">
+        <label for="marca"><b>Almacen:</b></label>
+         <select class="js-example-basic-single"  id="almacen" placeholder="" name="almacen" style="width: 100%" required >
+            <option selected>Almacen...</option>
+            <?php
+              $cargo = Controller::consultaAlmacen();
+              foreach ($cargo as $datos1 =>$valor1)
+              {
+                echo '<option value="'.$valor1["pk_almacen"].'">'.$valor1["almacen"].'</option>';
+              }
+            ?>
+          </select>
+    </div>
 
 
    

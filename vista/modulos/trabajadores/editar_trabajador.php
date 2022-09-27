@@ -41,7 +41,19 @@
             ?>
           </select>
     </div>
-
+       <div class="form-group">
+        <label for="marca"><b>Almacen:</b></label>
+         <select class="js-example-basic-single"  id="nvoAlmacen" placeholder="cargo" name="nvoAlmacen" style="width: 100%" required >
+            <option selected>Modificar....</option>
+            <?php
+              $cargo = Controller::consultaAlmacen();
+              foreach ($cargo as $datos1 =>$valor1)
+              {
+                echo '<option value="'.$valor1["pk_almacen"].'">'.$valor1["almacen"].'</option>';
+              }
+            ?>
+          </select>
+    </div>
 
    
     
@@ -56,10 +68,10 @@
 
  <?php
 
-  if(isset($_GET['pk_empleado'])&&isset($_GET['pk_persona']) && isset($_GET['pk_cargo'])){
+  if(isset($_GET['pk_empleado'])&&isset($_GET['pk_persona']) && isset($_GET['pk_cargo'])&& isset($_GET['pk_almacen'])){
 
   $calcular = new Controller();
-  $calcular -> editarTrabajadorController($_GET['pk_persona'], $_GET['pk_cargo'], $_GET['pk_empleado']);
+  $calcular -> editarTrabajadorController($_GET['pk_persona'], $_GET['pk_cargo'], $_GET['pk_empleado'], $_GET['pk_almacen']);
 
   }
 
