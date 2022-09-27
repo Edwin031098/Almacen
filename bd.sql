@@ -19,25 +19,31 @@ codigo VARCHAR(50) NOT NULL COMMENT 'apellido paterno del empleado',
 fotop VARCHAR(100) NOT NULL COMMENT 'imagen del empleado', 
 descipcion TEXT COMMENT 'dirección del empleado', 
 pieza INT(60) COMMENT 'Telefono celular del empleado a diez digitos',
+tipo INT(3)COMMENT 'Empleado / Proveedor',
 fk_marca INT COMMENT 'marca',
-FOREIGN KEY (fk_marca) REFERENCES marca(pk_marca)
-);
-CREATE TABLE empleado(
-	pk_empleado INT PRIMARY KEY NOT NULL AUTO_INCREMENT COMMENT 'Llave primaria de la tabla empleados',
-	fk_persona INT NOT NULL COMMENT 'nombre del empleado',
-	fk_cargo INT NOT NULL COMMENT 'nombre del empleado',
-	FOREIGN KEY (fk_persona) REFERENCES persona(pk_persona),
-	FOREIGN KEY (fk_cargo) REFERENCES cargo(pk_cargo)
+comentario VARCHAR(100) NOT NULL COMMENT 'imagen del empleado',
+FOREIGN KEY (fk_marca) REFERENCES marca(pk_marca)ON DELETE CASCADE ON UPDATE CASCADE
+
 );
 CREATE TABLE almacen(
 pk_almacen INT PRIMARY KEY NOT NULL AUTO_INCREMENT COMMENT 'Llave primaria de la tabla empleados',
 almacen VARCHAR(50) NOT NULL COMMENT 'nombre del empleado',
 ubicacion  VARCHAR(50) NOT NULL COMMENT 'apellido paterno del empleado'
 );
+CREATE TABLE empleado(
+	pk_empleado INT PRIMARY KEY NOT NULL AUTO_INCREMENT COMMENT 'Llave primaria de la tabla empleados',
+	fk_persona INT NOT NULL COMMENT 'nombre del empleado',
+	fk_cargo INT NOT NULL COMMENT 'nombre del empleado',
+	FOREIGN KEY (fk_persona) REFERENCES persona(pk_persona)ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (fk_cargo) REFERENCES cargo(pk_cargo) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
 CREATE TABLE proveedor(
 	pk_proveedor INT PRIMARY KEY NOT NULL AUTO_INCREMENT COMMENT 'Llave primaria de la tabla empleados',
 	fk_persona INT NOT NULL COMMENT'',
-	fk_marca INT NOT NULL COMMENT ''
+	fk_marca INT NOT NULL COMMENT '',
+	FOREIGN KEY (fk_persona) REFERENCES persona(pk_persona)ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (fk_marca) REFERENCES marca(pk_marca) ON DELETE CASCADE ON UPDATE CASCADE
 );
 CREATE TABLE inventario(
 	pk_inventario INT PRIMARY KEY NOT NULL AUTO_INCREMENT COMMENT 'Llave primaria de la tabla empleados',

@@ -33,11 +33,14 @@ class Controller
 					<td><?php echo $datos['apellidom']; ?></td>
 					
 					<td><?php echo $datos['sexo']; ?></td>
-					<td><?php echo $datos['domicilio']; ?></td>
-					<td><?php echo $datos['email']; ?></td>
+					<td><?php echo $datos['cel']; ?></td>
+					<td><?php echo $datos['direccion']; ?></td>
+					<td><?php echo $datos['tipo']; ?></td>
+					
 				
 					<td><?php echo '<img src="'.$datos['foto'].'" width="150px;">'; ?></td>
-					<td><button  type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eliminarpersona<?php echo $datos['pk_persona'] ?>" data-bs-whatever="@mdo">Desea eliminar esta persona?</button></td><td> <button class="btn btn-danger">🗑️</button></td>
+					<td><button id="btn-editar" class="btn btn-warning" onclick="window.location='index.php?action=editar_persona&pk_persona=<?php echo $datos['pk_almacen']; ?>&almacen=<?php echo $datos['almacen']; ?>&ubicacion=<?php echo $datos['ubicacion']; ?>'">Editar</button></td>
+					<td> <button class="btn btn-danger" onclick="confirmar0('<?php echo $datos['pk_persona']; ?>')">🗑️</button></td>
 		
 
 
@@ -81,6 +84,7 @@ class Controller
 					alert("El el tamanio del archivo es: "+tamanio)
 					</script>
 			';
+			$comentariop=$nombre_archivo;
 
 			$ruta = "controlador/fotos/".$nombre_archivo;
 
@@ -98,23 +102,120 @@ class Controller
 					</script>
 				';
 			}
-			$datosController = array("b"=>$_POST["nombre"], "c"=>$_POST["appa"], "d"=>$_POST["apma"], "e"=>$ruta, "g"=>$_POST["tel"],"k"=>$_POST["sexo"],"l"=>$_POST["dom"],"m"=>$_POST["email"]);
+			$datosController = array("b"=>$_POST["nombre"], "c"=>$_POST["appa"], "d"=>$_POST["apma"], "e"=>$ruta, "f"=>$comentariop, "g"=>$_POST["tel"],"k"=>$_POST["sexo"],"l"=>$_POST["dom"],"ti"=>$_POST["tip"]);
 
 			$respuesta = Datos::registrosEmpleadoModel($datosController, "persona");
 
 			if($respuesta = "success")
 			{
-				echo '<script>
-				alert ("Datos guardados correctamente");
-				window.location="index.php?action=empleados&guardar=ok"</script>';
+				
+						echo '<script>
+							(async () => {
+					
+							const a = await Swal.fire({
+                          position: "top-end",
+                          icon: "success",
+                         title: "Guardado Exitosamente 😄👍",
+                         showConfirmButton: false,
+                          timer: 1500
+                             })
+							
+							if(a){
+								window.location="index.php?action=mostrar_persona";
+							}
+
+							})()
+
+
+							</script>';
+
 			}
 			else
 			{
 				header("location:index.php?action=error");
 			}
+
+
 		}
+
+			
 	}
-	
+	// Método que recibe los valores de eliminar_marca.php
+		static public function eliminarPersonaController($pk_persona){
+
+			if(isset($pk_persona)){
+
+				if(!empty($pk_persona)){
+
+					$respuesta = Datos::eliminarPersonaModelo($pk_persona, "persona");
+
+					if($respuesta == "ok"){
+
+						echo '<script>
+							(async () => {
+					
+							const a = await Swal.fire({
+								icon: "success",
+								title: "La persona fue eliminada con éxito 😄👍",
+								html: "La persona <b>'.$pk_persona.'</b>, fue eliminada",
+								footer: "Presiona OK para continuar."
+							});
+							
+							if(a){
+								window.location="index.php?action=mostrar_persona";
+							}
+
+							})()
+
+							</script>';
+
+					}
+					else if($respuesta == "noexiste"){
+
+						echo '<script>
+						Swal.fire({
+								icon: "info",
+								timer: 5000,
+								timerProgressBar: true,
+								title: "La persona: '.$pk_persona.', no existe",
+								text: "Ingrese una marca existente",
+								footer: "Este mensaje cerrará automáticamente en 5s."
+							});
+						</script>
+						';
+
+					}
+					else{
+
+						echo '<script>
+						Swal.fire({
+								icon: "error",
+								timer: 5000,
+								timerProgressBar: true,
+								title: "Ups!😢<br> Ocurrió un error al eliminar la marca:",
+								html: "<b>'.$pk_persona.'</b>"
+							});
+						</script>
+						';
+
+					}
+
+				}else{
+
+					echo '<script>
+							Swal.fire({
+								icon: "warning",
+								timer: 5000,
+								timerProgressBar: true,
+								title: "Porfavor ingrese una persona"
+							});
+						</script>
+						';
+					
+				}
+
+			}
+		}
 	
 	
 		//consultas de EMPLEADOS
@@ -171,15 +272,37 @@ class Controller
 
 			if($respuesta = "success")
 			{
-				echo '<script>
-				alert ("Datos guardados correctamente");
-				window.location="index.php?action=productos&guardar=ok"</script>';
+				
+						echo '<script>
+							(async () => {
+					
+							const a = await Swal.fire({
+                          position: "top-end",
+                          icon: "success",
+                         title: "Guardado Exitosamente 😄👍",
+                         showConfirmButton: false,
+                          timer: 1500
+                             })
+							
+							if(a){
+								window.location="index.php?action=mostrar_producto";
+							}
+
+							})()
+
+
+							</script>';
+
 			}
 			else
 			{
 				header("location:index.php?action=error");
 			}
+
+
 		}
+
+			
 	}
 	// Método que recibe los valores de eliminar_marca.php
 		static public function eliminarProductoController($pk_producto){
@@ -268,9 +391,27 @@ if (isset($_POST['marca']))
 
 			if($respuestam = "success")
 			{
-				echo '<script>
-				alert ("Datos guardados correctamente");
-				window.location="index.php?action=mostrar_marca&guardar=ok"</script>';
+				
+						echo '<script>
+							(async () => {
+					
+							const a = await Swal.fire({
+                          position: "top-end",
+                          icon: "success",
+                         title: "Guardado Exitosamente 😄👍",
+                         showConfirmButton: false,
+                          timer: 1500
+                             })
+							
+							if(a){
+								window.location="index.php?action=mostrar_marca";
+							}
+
+							})()
+
+
+							</script>';
+
 			}
 			else
 			{
@@ -783,6 +924,12 @@ if (isset($_POST['marca']))
      	$respuesta1 = Datos::listadoDePersona($tabla1);
      	return $respuesta1;
      }
+     public static function consultaPersona2()
+     {
+     	$tabla1 = "persona";
+     	$respuesta1 = Datos::listadoDePersona2($tabla1);
+     	return $respuesta1;
+     }
      public static function consultaProveedor()
      {
      	$tabla1 = "proveedor";
@@ -801,9 +948,27 @@ if (isset($_POST['marca']))
 
 			if($respuestam = "success")
 			{
-				echo '<script>
-				alert ("Datos guardados correctamente");
-				window.location="index.php?action=mostrar_proveedor&guardar=ok"</script>';
+				
+						echo '<script>
+							(async () => {
+					
+							const a = await Swal.fire({
+                          position: "top-end",
+                          icon: "success",
+                         title: "Guardado Exitosamente 😄👍",
+                         showConfirmButton: false,
+                          timer: 1500
+                             })
+							
+							if(a){
+								window.location="index.php?action=mostrar_proveedor";
+							}
+
+							})()
+
+
+							</script>';
+
 			}
 			else
 			{
@@ -927,9 +1092,27 @@ if (isset($_POST['cargo']))
 
 			if($respuestam = "success")
 			{
-				echo '<script>
-				alert ("Datos guardados correctamente");
-				window.location="index.php?action=marcas&guardar=ok"</script>';
+				
+						echo '<script>
+							(async () => {
+					
+							const a = await Swal.fire({
+                          position: "top-end",
+                          icon: "success",
+                         title: "Guardado Exitosamente 😄👍",
+                         showConfirmButton: false,
+                          timer: 1500
+                             })
+							
+							if(a){
+								window.location="index.php?action=mostrar_trabajador";
+							}
+
+							})()
+
+
+							</script>';
+
 			}
 			else
 			{
@@ -1141,9 +1324,27 @@ if (isset($_POST['almacen']))
 
 			if($respuestam = "success")
 			{
-				echo '<script>
-				alert ("Datos guardados correctamente");
-				window.location="index.php?action=marcas&guardar=ok"</script>';
+				
+						echo '<script>
+							(async () => {
+					
+							const a = await Swal.fire({
+                          position: "top-end",
+                          icon: "success",
+                         title: "Guardado Exitosamente 😄👍",
+                         showConfirmButton: false,
+                          timer: 1500
+                             })
+							
+							if(a){
+								window.location="index.php?action=mostrar_almacen";
+							}
+
+							})()
+
+
+							</script>';
+
 			}
 			else
 			{

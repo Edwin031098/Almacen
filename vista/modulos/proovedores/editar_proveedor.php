@@ -19,7 +19,7 @@
          <select class="js-example-basic-single"  id="nvoPersona" placeholder="" name="nvoPersona" style="width: 100%" required >
             <option selected > Modificar....</option>
             <?php
-              $proveedor = Controller::consultaPersona();
+              $proveedor = Controller::consultaPersona2();
               foreach ($proveedor as $datos1 =>$valor1)
               {
                 echo '<option value="'.$valor1["pk_persona"].'">'.$valor1["nombrep"].' '.$valor1["apellidop"].' '.$valor1["apellidom"].'</option>';

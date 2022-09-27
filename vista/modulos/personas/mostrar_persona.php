@@ -1,6 +1,6 @@
 
 <div class="col-md-12">
-        <h1> Seccion Personas </h1>
+        <h1> Seccion de Personas </h1>
         
     </div>
     <div clase="col-md-12">
@@ -23,9 +23,10 @@
 					<th>Nombre</th>
 					<th>Apellido Paterno</th>
 					<th>Apellido Materno</th>
-					<th>Edad</th>
 					<th>Sexo</th>
-					<th>Domicilio</th>
+					<th>Telefono</th>
+					<th>Direccion</th>
+					<th>Tipo</th>
 					<th>Foto</th>
 					<th>Editar</th>
 					<th>Borrar</th>
@@ -38,7 +39,24 @@
 					?>
 				</tbody>
 			</table>
-				
+				<script type="text/javascript">
+					function confirmar0(pk_persona){
+						Swal.fire({
+						  title: 'Estás seguro?',
+						  html: "Se eliminará la persona: <b>"+pk_persona+"</b>",
+						  icon: 'warning',
+						  showCancelButton: true,
+						  cancelButtonText: "Cancelar",
+						  confirmButtonColor: '#3085d6',
+						  cancelButtonColor: '#d33',
+						  confirmButtonText: 'Si, eliminar!'
+						}).then((result) => {
+						  if (result.value) {
+						    window.location="index.php?action=eliminar_persona&pk_persona="+pk_persona;
+						  }
+						})
+					};
+	</script>
 		
 
 		</div>

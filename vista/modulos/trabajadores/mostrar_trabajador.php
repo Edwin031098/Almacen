@@ -1,5 +1,5 @@
 <div class="col-md-12">
-        <h1> Seccion de Empleados </h1>
+        <h1> Empleados Activos </h1>
         
     </div>
     <div clase="col-md-12">
@@ -24,7 +24,8 @@
 
 					
 					<th>Editar</th>
-					<th>Borrar</th>
+					
+					<th>Desactivar</th>
 				</tr>
 				</thead>
 				<tbody>

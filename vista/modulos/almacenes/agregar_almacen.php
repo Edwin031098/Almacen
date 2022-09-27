@@ -25,6 +25,7 @@
       <input type="text" class="form-control" id="ubicacion" placeholder="" name="ubicacion">
     </div>
     
+    
   </div>
   <button type="submit" class="btn btn-primary btn-lg ">Guardar</button>
   </form>

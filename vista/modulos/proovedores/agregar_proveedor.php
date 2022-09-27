@@ -1,6 +1,6 @@
 <meta charset="utf-8">
 <div class="col-md-12">
-        <h1> Agregar Proveedor</h1>
+        <h1> Activar Proveedor</h1>
         
     </div>
     <div clase="col-md-12">
@@ -19,7 +19,7 @@
          <select class="js-example-basic-single"  id="persona" placeholder="persona" name="persona" style="width: 100%" required >
             <option selected>Persona...</option>
             <?php
-              $persona = Controller::consultaPersona();
+              $persona = Controller::consultaPersona2();
               foreach ($persona as $datos1 =>$valor1)
               {
                 echo '<option value="'.$valor1["pk_persona"].'">'.$valor1["nombrep"].' '.$valor1["apellidop"].' '.$valor1["apellidom"].'</option>';

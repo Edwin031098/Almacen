@@ -1,5 +1,5 @@
 <div class="col-md-12">
-        <h1> Seccion de Proveedores </h1>
+        <h1> Proveedores Activos </h1>
         
     </div>
     <div clase="col-md-12">
@@ -25,6 +25,7 @@
 					
 					
 					<th>Borrar</th>
+					<th>Desactivar</th>
 				</tr>
 				</thead>
 				<tbody>

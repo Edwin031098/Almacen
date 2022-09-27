@@ -2,7 +2,7 @@
 
 <meta charset="utf-8">
 <div class="col-md-12">
-        <h1> Agregar Empleado</h1>
+        <h1> Activar Empleado</h1>
         
     </div>
     <div clase="col-md-12">

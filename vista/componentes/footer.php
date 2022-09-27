@@ -33,6 +33,7 @@
           <ul class="fa-ul" style="margin-left: 1.65em;">
             <li class="mb-3">
               <span class="fa-li"><i class="fas fa-home"></i></span><span class="ms-2">Victoria #12 , Tuxpan Nayarit</span>
+              
             </li>
             <li class="mb-3">
               <span class="fa-li"><i class="fas fa-envelope"></i></span><span class="ms-2">Dulceriaarnoldo@gmail.com</span>
@@ -41,6 +42,9 @@
               <span class="fa-li"><i class="fas fa-phone"></i></span><span class="ms-2">+ (52) 3231743795</span>
             </li>
           </ul>
+          <div class="mt-4" >
+                      <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14802.979186790097!2d-105.2998466!3d21.9443603!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x7ca29c05254cc83d!2sDulcer%C3%ADa%20Arnoldo!5e0!3m2!1ses-419!2smx!4v1664252699112!5m2!1ses-419!2smx" width="250" height="150" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
         </div>
         <!--Grid column-->
 
@@ -61,8 +65,10 @@
              
             </tbody>
           </table>
+
         </div>
         <!--Grid column-->
+
       </div>
       <!--Grid row-->
     </div>
