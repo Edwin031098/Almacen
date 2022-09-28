@@ -202,13 +202,13 @@ class Controller
 					
 							const a = await Swal.fire({
 								icon: "success",
-								title: "El almacen fue eliminada con éxito 😄👍",
-								html: "La marca <b>'.$pk_almacen.'</b>, fue eliminada",
+								title: "La persona fue editada con éxito 😄👍",
+								html: "La marca <b>'.$pk_persona.'</b>, fue eliminada",
 								footer: "Presiona OK para continuar."
 							});
 							
 							if(a){
-								window.location="index.php?action=mostrar_almacen";
+								window.location="index.php?action=mostrar_persona";
 							}
 
 							})()
@@ -223,7 +223,7 @@ class Controller
 								icon: "info",
 								timer: 5000,
 								timerProgressBar: true,
-								title: "El almacen: '.$pk_almacen.', no existe",
+								title: "La persona: '.$pk_persona.', no existe",
 								text: "Ingrese una marca existente",
 								footer: "Este mensaje cerrará automáticamente en 5s."
 							});
@@ -238,8 +238,8 @@ class Controller
 								icon: "error",
 								timer: 5000,
 								timerProgressBar: true,
-								title: "Ups!😢<br> Ocurrió un error al eliminar la marca:",
-								html: "<b>'.$pk_almacen.'</b>"
+								title: "Ups!😢<br> Ocurrió un error al eliminar la persona:",
+								html: "<b>'.$pk_persona.'</b>"
 							});
 						</script>
 						';
@@ -253,7 +253,7 @@ class Controller
 								icon: "warning",
 								timer: 5000,
 								timerProgressBar: true,
-								title: "Porfavor ingrese una marca"
+								title: "Porfavor ingrese una persona"
 							});
 						</script>
 						';
@@ -1036,7 +1036,7 @@ if (isset($_POST['marca']))
 								timer: 5000,
 								timerProgressBar: true,
 								title: "Ups!😢<br> Ocurrió un error al modificar al proveedor:",
-								html: "<b>'.$nombreProveedor.'</b>"
+								html: "<b>'.$pk_proveedor.'</b>"
 							});
 						</script>
 						';
@@ -1363,13 +1363,13 @@ if (isset($_POST['cargo']))
 							notificacion.play();
 							const a = await Swal.fire({
 								icon: "success",
-								title: "El proveedor fue modificado con éxito 😄👍",
-								html: "El proveedor <b>'.$pk_proveedor.' '.$nombre.'</b>, fue modificado correctamente</b>",
+								title: "El Trabajador fue modificado con éxito 😄👍",
+								html: "El Trabajador <b>'.$pk_empleado.' </b>, fue modificado correctamente</b>",
 								footer: "Presiona OK para continuar."
 							});
 							
 							if(a){
-								window.location="index.php?opcion=ver_proveedores";
+								window.location="index.php?action=mostrar_trabajador";
 							}
 
 							})()
@@ -1384,7 +1384,7 @@ if (isset($_POST['cargo']))
 								icon: "info",
 								timer: 5000,
 								timerProgressBar: true,
-								title: "El proveedor con el #ID: '.$pk_proveedor.', no existe",
+								title: "El Trabajador con el #ID: '.$pk_empleado.', no existe",
 								text: "Ingrese un proveedor existente",
 								footer: "Este mensaje cerrará automáticamente en 5s."
 							});
@@ -1399,7 +1399,7 @@ if (isset($_POST['cargo']))
 								icon: "info",
 								timer: 5000,
 								timerProgressBar: true,
-								title: "Modifique almenos un campo del proveedor",
+								title: "Modifique almenos un campo del Trabajador",
 								text: "Ingrese nueva información del proveedor",
 								footer: "Este mensaje cerrará automáticamente en 5s."
 							});
@@ -1414,8 +1414,8 @@ if (isset($_POST['cargo']))
 								icon: "error",
 								timer: 5000,
 								timerProgressBar: true,
-								title: "Ups!😢<br> Ocurrió un error al modificar al proveedor:",
-								html: "<b>'.$nombreProveedor.'</b>"
+								title: "Ups!😢<br> Ocurrió un error al modificar el trabajador:",
+								html: "<b>'.$pk_empleado.'</b>"
 							});
 						</script>
 						';
@@ -1739,8 +1739,8 @@ if (isset($_POST['almacen']))
 					
 							const a = await Swal.fire({
 								icon: "success",
-								title: "El almacen fue eliminada con éxito 😄👍",
-								html: "La marca <b>'.$pk_almacen.'</b>, fue eliminada",
+								title: "El producto fue eliminada con éxito 😄👍",
+								html: "El producto <b>'.$pk_producto.'</b>, fue eliminada",
 								footer: "Presiona OK para continuar."
 							});
 							
@@ -1760,7 +1760,7 @@ if (isset($_POST['almacen']))
 								icon: "info",
 								timer: 5000,
 								timerProgressBar: true,
-								title: "El almacen: '.$pk_almacen.', no existe",
+								title: "El almacen: '.$pk_producto.', no existe",
 								text: "Ingrese una marca existente",
 								footer: "Este mensaje cerrará automáticamente en 5s."
 							});
@@ -1776,7 +1776,7 @@ if (isset($_POST['almacen']))
 								timer: 5000,
 								timerProgressBar: true,
 								title: "Ups!😢<br> Ocurrió un error al eliminar la marca:",
-								html: "<b>'.$pk_almacen.'</b>"
+								html: "<b>'.$pk_producto.'</b>"
 							});
 						</script>
 						';
@@ -1790,7 +1790,7 @@ if (isset($_POST['almacen']))
 								icon: "warning",
 								timer: 5000,
 								timerProgressBar: true,
-								title: "Porfavor ingrese una marca"
+								title: "Porfavor ingrese un producto"
 							});
 						</script>
 						';
