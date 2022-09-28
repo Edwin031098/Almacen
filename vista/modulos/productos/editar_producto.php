@@ -60,6 +60,19 @@
            
     
   </div>
+    <div class="form-group">
+        <label for="marca"><b>Almacen:</b></label>
+         <select class="js-example-basic-single"  id="nalmacen" placeholder="" name="nalmacen" style="width: 100%" required >
+            <option selected>Modificar...</option>
+            <?php
+              $cargo = Controller::consultaAlmacen();
+              foreach ($cargo as $datos1 =>$valor1)
+              {
+                echo '<option value="'.$valor1["pk_almacen"].'">'.$valor1["almacen"].'</option>';
+              }
+            ?>
+          </select>
+    </div>
   
 
 
@@ -70,9 +83,9 @@
 
  
   <?php 
-  if(isset($_GET['producto'])&isset($_GET['codigo'])&isset($_GET['fotop'])&isset($_GET['descripcion'])&isset($_GET['pieza'])&isset($_GET['pk_marca'])&isset($_GET['comentario'])){
+  if(isset($_GET['producto'])&isset($_GET['codigo'])&isset($_GET['fotop'])&isset($_GET['descripcion'])&isset($_GET['pieza'])&isset($_GET['pk_marca'])&isset($_GET['comentario'])&isset($_GET['pk_almacen'])){
     $registro = new Controller();
-    $registro -> editarProductoController($_GET['pk_producto'],$_GET['producto'],$_GET['codigo'],$_GET['fotop'],$_GET['descripcion'],$_GET['pieza'],$_GET['pk_marca'],$_GET['comentario']);
+    $registro -> editarProductoController($_GET['pk_producto'],$_GET['producto'],$_GET['codigo'],$_GET['fotop'],$_GET['descripcion'],$_GET['pieza'],$_GET['pk_marca'],$_GET['comentario'],$_GET['pk_almacen']);
    
 
   }

@@ -47,18 +47,18 @@ CREATE TABLE proveedor(
 );
 CREATE TABLE inventario(
 	pk_inventario INT PRIMARY KEY NOT NULL AUTO_INCREMENT COMMENT 'Llave primaria de la tabla empleados',
-	fk_almacen INT NOT NULL COMMENT 'id almacen',
 	fk_empleado INT NOT NULL COMMENT'empleado',
 	fk_producto INT NOT NULL COMMENT'producto',
 	fk_proveedor INT NOT NULL COMMENT'proveedor',
 	fecha_inventario DATE NOT NULL COMMENT'',
-	FOREIGN KEY (fk_almacen) REFERENCES almacen(pk_almacen),
-	FOREIGN KEY (fk_empleado) REFERENCES empleado(pk_empleado),
-	FOREIGN KEY (fk_producto) REFERENCES producto(pk_producto),
-	FOREIGN KEY (fk_proveedor)REFERENCES proveedor(pk_proveedor)
+	FOREIGN KEY (fk_almacen) REFERENCES almacen(pk_almacen)ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (fk_empleado) REFERENCES empleado(pk_empleado)ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (fk_producto) REFERENCES producto(pk_producto)ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (fk_proveedor)REFERENCES proveedor(pk_proveedor)ON DELETE CASCADE ON UPDATE CASCADE
 
 );
 CREATE TABLE cargo(
 pk_cargo INT PRIMARY KEY NOT NULL AUTO_INCREMENT COMMENT 'Llave primaria de la tabla cargo',
 cargo VARCHAR(50) NOT NULL COMMENT 'cargo del empleado'
 );
+ALTER TABLE producto ADD CONSTRAINT fk_almacen_almacen FOREIGN KEY(fk_almacen)REFERENCES almacen(pk_almacen);

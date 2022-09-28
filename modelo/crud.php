@@ -13,6 +13,7 @@ static public function vistaPersonaModel($tabla)
 
 		$consulta->close();
 	}
+	
 	static public function eliminarPersonaModelo($pk_persona, $tabla){
 
 
@@ -233,6 +234,26 @@ static public function registrosEmpleadoModel($DatosModel, $tabla)
 
 		$consulta1->close();
 	}
+	public static function listadoDeEmpleadoe($tabla1)
+	{
+		$consulta1 = Conexion::getConection()->prepare("SELECT pk_empleado,fk_persona,fk_cargo FROM $tabla1 WHERE fk_cargo=1; ORDER BY nombre");
+
+		$consulta1->execute();
+
+		return $consulta1->fetchAll();
+
+		$consulta1->close();
+	}
+	public static function listadoDeEmpleadoa($tabla1)
+	{
+		$consulta1 = Conexion::getConection()->prepare("SELECT pk_empleado,fk_persona,fk_cargo FROM $tabla1 WHERE fk_cargo=2; ORDER BY nombre");
+
+		$consulta1->execute();
+
+		return $consulta1->fetchAll();
+
+		$consulta1->close();
+	}
 	// Método que elimina una marca con el nombre de la marca
 	static public function eliminarMarcaModelo($pk_marca, $tabla){
 
@@ -439,7 +460,7 @@ static public function registrosEmpleadoModel($DatosModel, $tabla)
 	}
 	static public function registrosProductoModel($DatosModel, $tabla)
 	{
-		$ejecucion = Conexion::getConection()->prepare("INSERT INTO $tabla (producto, codigo, fotop, descripcion, pieza,fk_marca,comentario) VALUES (:producto, :codigo, :fotop, :descripcion, :pieza, :marca, :com)");
+		$ejecucion = Conexion::getConection()->prepare("INSERT INTO $tabla (producto, codigo, fotop, descripcion, pieza,fk_marca,comentario,fk_almacen) VALUES (:producto, :codigo, :fotop, :descripcion, :pieza, :marca, :com, :alm)");
 
 		
 		$ejecucion ->bindParam(":producto", $DatosModel["pro"], PDO::PARAM_STR);
@@ -449,7 +470,7 @@ static public function registrosEmpleadoModel($DatosModel, $tabla)
         $ejecucion ->bindParam(":pieza", $DatosModel["pz"], PDO::PARAM_STR);
 		$ejecucion ->bindParam(":marca", $DatosModel["ma"], PDO::PARAM_STR);
 		$ejecucion ->bindParam("com",$DatosModel["a"],PDO::PARAM_STR);
-		
+		$ejecucion ->bindParam("alm",$DatosModel["al"],PDO::PARAM_STR);
 
 		if($ejecucion ->execute())
 		{
@@ -465,8 +486,9 @@ static public function registrosEmpleadoModel($DatosModel, $tabla)
 	
 	static public function mostrarProductoModel($tabla, $articulosXPagina,$marca)
 	{
+		$tablaa="almacen";
 		$iniciar = ($_GET['pagina']-1)*$articulosXPagina;
-		$consulta = Conexion::getConection()->prepare("SELECT COUNT(producto),pk_producto,producto,codigo,fotop,descripcion,pieza,fk_marca,pk_marca,nombre,comentario FROM $tabla,$marca WHERE $tabla.fk_marca=$marca.pk_marca GROUP BY producto ORDER BY nombre LIMIT :iniciar, :articulosXPagina;");
+		$consulta = Conexion::getConection()->prepare("SELECT COUNT(producto),pk_producto,producto,codigo,fotop,descripcion,pieza,fk_marca,pk_marca,nombre,comentario,pk_almacen,almacen FROM $tabla,$marca,$tablaa WHERE $tabla.fk_marca=$marca.pk_marca AND  $tabla.fk_almacen=$tablaa.pk_almacen GROUP BY producto ORDER BY nombre LIMIT :iniciar, :articulosXPagina;");
 		$consulta -> bindParam(':iniciar', $iniciar, PDO::PARAM_INT);
 		$consulta -> bindParam(':articulosXPagina', $articulosXPagina, PDO::PARAM_INT);
 		
@@ -517,6 +539,7 @@ static public function registrosEmpleadoModel($DatosModel, $tabla)
 		$pieza = $datos['valor_pi'];
 		$marca = $datos['valor_m'];
 		$comentario = $datos['valor_co'];
+		$almacen = $datos['valor_al'];
 		
 
 		// Nuevos valores que se establecerán
@@ -527,15 +550,16 @@ static public function registrosEmpleadoModel($DatosModel, $tabla)
 		$npieza = $datos['valor_npi'];
 		$nmarca = $datos['valor_nma'];
 		$ncomentario = $datos['e'];
+		$nalmacen = $datos['valor_nal'];
 		
 		
 
 		// Verificar que almenos se modificó un campo
-		if(($producto != $nproducto) || ($codigo != $ncodigo) || ($fotop != $nfotop) || ($descripcion != $ndescripcion) ||($pieza != $npieza) || ($marca != $nmarca) ||  ($comentario != $ncomentario)){
+		if(($producto != $nproducto) || ($codigo != $ncodigo) || ($fotop != $nfotop) || ($descripcion != $ndescripcion) ||($pieza != $npieza) || ($marca != $nmarca) ||  ($comentario != $ncomentario)||  ($almacen != $nalmacen)){
 			
 			
-
-			$datos = Conexion::getConection()->prepare("SELECT producto,codigo,fotop,descripcion,pieza,fk_marca,comentario FROM $tabla,$tablam WHERE pk_producto=:pk_producto  AND  $tabla.fk_marca=$tablam.pk_marca");
+              $tablaa="almacen";
+			$datos = Conexion::getConection()->prepare("SELECT producto,codigo,fotop,descripcion,pieza,fk_marca,comentario,fk_almacen FROM $tabla,$tablam,$tablaa WHERE pk_producto=:pk_producto  AND  $tabla.fk_marca=$tablam.pk_marca AND  $tabla.fk_almacen=$tablaa.pk_almacen");
 			$datos -> bindParam(':pk_producto', $pk_producto);
 			
 			$datos -> execute();
@@ -549,7 +573,7 @@ static public function registrosEmpleadoModel($DatosModel, $tabla)
                  
                  
 			$tablam="marca";
-				$datos2 = Conexion::getConection()->prepare("UPDATE $tabla SET producto=:nproducto, codigo=:ncodigo,fotop=:nfotop, descripcion=:ndescripcion,pieza=:npieza, fk_marca=:nmarca,comentario=:ncomentario WHERE pk_producto=:pk_producto AND fk_marca=fk_marca");
+				$datos2 = Conexion::getConection()->prepare("UPDATE $tabla SET producto=:nproducto, codigo=:ncodigo,fotop=:nfotop, descripcion=:ndescripcion,pieza=:npieza, fk_marca=:nmarca,comentario=:ncomentario ,fk_almacen=:nalmacen WHERE pk_producto=:pk_producto AND fk_marca=fk_marca AND fk_almacen=fk_almacen");
 				$datos2 -> bindParam(':pk_producto', $pk_producto);
 				$datos2 -> bindParam(':nproducto', $nproducto);
 				$datos2-> bindParam(':ncodigo', $ncodigo);
@@ -558,7 +582,7 @@ static public function registrosEmpleadoModel($DatosModel, $tabla)
 				$datos2 -> bindParam(':npieza', $npieza);
 				$datos2 -> bindParam(':nmarca', $nmarca);
 				$datos2 -> bindParam(':ncomentario', $ncomentario);
-				
+				$datos2 -> bindParam(':nalmacen', $nalmacen);
 				
 				$datos2->execute();
 
@@ -884,6 +908,22 @@ static public function registrosEmpleadoModel($DatosModel, $tabla)
 	static public function vistaAlmacenModel($tabla)
 	{
 		$consulta = Conexion::getConection()->prepare("SELECT * FROM $tabla ORDER BY pk_almacen");
+
+		$consulta->execute();
+
+		return $consulta->fetchALL();
+
+		$consulta->close();
+	}
+	static public function vistaInventarioModel($tabla,$datos)
+	{
+		
+		$pk_almacen = $datos['pk_al'];
+		$tablap="producto";
+		$tablam="marca";
+		$consulta = Conexion::getConection()->prepare("SELECT pk_almacen,almacen,pk_producto,producto,pieza,fk_marca,codigo,pk_marca,nombre FROM $tabla,$tablap,$tablam WHERE pk_almacen=$pk_almacen AND $tablap.fk_almacen=$tabla.pk_almacen AND $tablap.fk_marca=$tablam.pk_marca ORDER BY pk_marca");
+		
+		
 
 		$consulta->execute();
 

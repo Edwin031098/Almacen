@@ -27,6 +27,11 @@
                 <input type="password" id="pass" name="pass" class="form-control form-control-lg" />
                 <label class="form-label" for="typePasswordX">Password</label>
               </div>
+              <div class="form-outline form-white mb-4">
+                <input type="checkbox" class="form-check-input" id="checkmostrar" name="checkmostrar" onclick="mostrar()">
+          <label class="form-check-label" for="checkmostrar" style="color: white;"> Mostrar contraseña
+          </label>
+              </div>
 
               
 
@@ -41,24 +46,15 @@
       
       </div>
     </div>
+    <script type="text/javascript">
+        function mostrar(){
+        var x = document.getElementById("pass");
+          if (x.type == "password"){
+              x.type = "text";
+          } 
+          else{
+              x.type = "password";
+          }
+        } 
+      </script>
   
-<script>
-// Example starter JavaScript for disabling form submissions if there are invalid fields
-(function() {
-  'use strict';
-  window.addEventListener('load', function() {
-    // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    var forms = document.getElementsByClassName('needs-validation');
-    // Loop over them and prevent submission
-    var validation = Array.prototype.filter.call(forms, function(form) {
-      form.addEventListener('submit', function(event) {
-        if (form.checkValidity() === false) {
-          event.preventDefault();
-          event.stopPropagation();
-        }
-        form.classList.add('was-validated');
-      }, false);
-    });
-  }, false);
-})();
-</script>

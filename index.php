@@ -22,10 +22,13 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  
+
 
 
 </head>
-<body style="background-color:#ff00a6;" id="body-pd"> 
+<body style="background-color:#ff00a6;" id="body-pd">
+    
 
     
     <?php require_once("controlador/CtrlMain.php"); 
@@ -34,6 +37,7 @@
 
 
     ?>
+
 
     <script src="./vista/js/nav.js"></script>
     

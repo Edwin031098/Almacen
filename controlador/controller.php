@@ -54,6 +54,7 @@ class Controller
        
 
 	}
+	
 	//consultas de EMPLEADOS
 	static public function registroPersonaController()
 	{
@@ -387,7 +388,7 @@ class Controller
 					</script>
 				';
 			}
-			$datosController = array("pro"=>$_POST["producto"], "cod"=>$_POST["codigo"], "e"=>$ruta, "des"=>$_POST["descripcion"],"pz"=>$_POST["pieza"],"ma"=>$_POST["marca"],"a"=>$ruta2);
+			$datosController = array("pro"=>$_POST["producto"], "cod"=>$_POST["codigo"], "e"=>$ruta, "des"=>$_POST["descripcion"],"pz"=>$_POST["pieza"],"ma"=>$_POST["marca"],"a"=>$ruta2,"al"=>$_POST["almacen"]);
 
 			$respuesta = Datos::registrosProductoModel($datosController, "producto");
 
@@ -818,6 +819,19 @@ if (isset($_POST['marca']))
      	$respuesta1 = Datos::listadoDeMarca($tabla1);
      	return $respuesta1;
      }
+      public static function consultaEmpleadoe()
+     {
+     	$tabla1 = "empleado";
+     	$respuesta1 = Datos::listadoDeEmpleadoe($tabla1);
+     	return $respuesta1;
+     }
+      public static function consultaEmpleadoa()
+     {
+     	$tabla1 = "empleado";
+     	$respuesta1 = Datos::listadoDeEmpleadoa($tabla1);
+     	return $respuesta1;
+     }
+      
      public static function consultaCargo()
      {
      	$tabla1 = "cargo";
@@ -1443,6 +1457,46 @@ if (isset($_POST['cargo']))
 			<?php
 		}
 	}
+	static public function vistaAlmacenController2()
+	{
+		
+		$respuesta = Datos::vistaAlmacenModel("almacen");
+		foreach($respuesta as $row => $datos)
+		{
+			?>
+				<tr>
+					<td><?php echo $datos['pk_almacen']; ?></td>
+					<td><?php echo $datos['almacen']; ?></td>
+						<td><?php echo $datos['ubicacion']; ?></td>
+
+					
+				
+					<td><button id="btn-editar" class="btn btn-primary" onclick="window.location='index.php?action=ver_inventario&pk_almacen=<?php echo $datos['pk_almacen']; ?>&almacen=<?php echo $datos['almacen']; ?>&ubicacion=<?php echo $datos['ubicacion']; ?>'"><i class='far fa-file-alt'></i></button>
+				</tr>
+			<?php
+		}
+	}
+	static public function vistaAlmacenController3($pk_almacen)
+	{
+		$datos=array('pk_al'=>$pk_almacen);
+		$respuesta = Datos::vistaInventarioModel("almacen",$datos);
+		foreach($respuesta as $row => $datos)
+		{
+			?>
+				<tr>
+					<td><?php echo $datos['codigo']; ?></td>
+					<td><?php echo $datos['producto']; ?></td>
+						<td><?php echo $datos['nombre']; ?></td>
+						<td><?php echo $datos['pieza']; ?></td>
+						
+
+					
+				
+					
+				</tr>
+			<?php
+		}
+	}
 	 static public function registroUbicacionController(){
 
 if (isset($_POST['almacen']))
@@ -1485,6 +1539,8 @@ if (isset($_POST['almacen']))
 
 			
 	}
+	
+
 	static public function vistaProductoController()
 	{
 		$marca="marca";
@@ -1549,7 +1605,7 @@ if (isset($_POST['almacen']))
       
     </div>
 
-                    <button id="btn-editar" class="btn btn-warning" onclick="window.location='index.php?action=editar_producto&pk_producto=<?php echo $datos['pk_producto']; ?>&producto=<?php echo $datos['producto']; ?>&codigo=<?php echo $datos['codigo']; ?>&fotop=<?php echo $datos['fotop']; ?>&descripcion=<?php echo $datos['descripcion']; ?>&pieza=<?php echo $datos['pieza']; ?>&pk_marca=<?php echo $datos['pk_marca']; ?>&comentario=<?php echo $datos['comentario']; ?>'">Editar</button>
+                    <button id="btn-editar" class="btn btn-warning" onclick="window.location='index.php?action=editar_producto&pk_producto=<?php echo $datos['pk_producto']; ?>&producto=<?php echo $datos['producto']; ?>&codigo=<?php echo $datos['codigo']; ?>&fotop=<?php echo $datos['fotop']; ?>&descripcion=<?php echo $datos['descripcion']; ?>&pieza=<?php echo $datos['pieza']; ?>&pk_marca=<?php echo $datos['pk_marca']; ?>&comentario=<?php echo $datos['comentario']; ?>&pk_almacen=<?php echo $datos['pk_almacen']; ?>'">Editar</button>
 
 					
 					  <button class="btn btn-danger" onclick="confirmar2('<?php echo $datos['pk_producto']; ?>')">🗑️</button>
@@ -1623,7 +1679,7 @@ if (isset($_POST['almacen']))
 
 		}	
 		// Método que recibe los valores de eliminar_marca.php
-		static public function editarProductoController($pk_producto,$producto,$codigo,$fotop,$descripcion,$pieza,$pk_marca,$comentario){
+		static public function editarProductoController($pk_producto,$producto,$codigo,$fotop,$descripcion,$pieza,$pk_marca,$comentario,$pk_almacen){
 
 			if(isset($_POST['nproducto'])){
 
@@ -1672,7 +1728,7 @@ if (isset($_POST['almacen']))
 				';
 			}
 					$tablam="marca";
-					$datos = array('valor_idp'=>$pk_producto, 'valor_p'=>$producto, 'valor_c'=>$codigo,'valor_nf'=>$fotop,'valor_d'=>$descripcion,'valor_pi'=>$pieza,'valor_m'=>$pk_marca,'valor_co'=>$comentario, 'valor_np'=>$_POST['nproducto'], 'valor_nc'=>$_POST['ncodigo'],'f'=>$rutan,'e'=>$ruta2n,  'valor_nd'=>$_POST['ndescripcion'], 'valor_npi'=>$_POST['npieza'], 'valor_nma'=>$_POST['nmarca']);
+					$datos = array('valor_idp'=>$pk_producto, 'valor_p'=>$producto, 'valor_c'=>$codigo,'valor_nf'=>$fotop,'valor_d'=>$descripcion,'valor_pi'=>$pieza,'valor_m'=>$pk_marca,'valor_co'=>$comentario,'valor_al'=>$pk_almacen, 'valor_np'=>$_POST['nproducto'], 'valor_nc'=>$_POST['ncodigo'],'f'=>$rutan,'e'=>$ruta2n,  'valor_nd'=>$_POST['ndescripcion'], 'valor_npi'=>$_POST['npieza'], 'valor_nma'=>$_POST['nmarca'], 'valor_nal'=>$_POST['nalmacen']);
 
 					$respuesta = Datos::editarProductoModelo($datos, "producto",$tablam);
 

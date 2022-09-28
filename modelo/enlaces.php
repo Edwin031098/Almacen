@@ -107,8 +107,12 @@ class Paginas
 			$module = "vista/modulos/almacenes/editar_almacen.php";
 
 		}
-		else if($enlaces == "mostrar_alpro"){
-			$module = "vista/modulos/almacen_producto/mostrar_alpro.php";
+		else if($enlaces == "mostrar_inventario"){
+			$module = "vista/modulos/almacen_producto/mostrar_inventario.php";
+
+		}
+		else if($enlaces == "ver_inventario"){
+			$module = "vista/modulos/almacen_producto/ver_inventario.php";
 
 		}
 		else 
